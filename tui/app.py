@@ -1,14 +1,9 @@
 from __future__ import annotations
 
-import sys
-import os
-
 from textual.app import App, ComposeResult
 from textual.events import Key
 from textual.widgets import Header, Footer
 from textual.worker import Worker, WorkerState
-
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 
 from engine import (
     AkinatorEngine,
