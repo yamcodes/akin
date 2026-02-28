@@ -1,5 +1,9 @@
 # akin
 
+[![License](https://custom-icon-badges.demolab.com/github/license/yamcodes/akin?label=License&color=blue&logo=law&labelColor=0d1117)](https://github.com/yamcodes/akin/blob/main/LICENSE)
+[![Scalar](https://img.shields.io/badge/Scalar-080808?logo=scalar&logoColor=e7e7e7)](https://scalar.com/)
+[![Star](https://custom-icon-badges.demolab.com/github/stars/yamcodes/akin?logo=star&logoColor=373737&label=Star)](https://github.com/yamcodes/akin/stargazers/)
+
 Bringing the Akinator experience to the terminal — and eventually to the browser.
 
 ## Quick start
@@ -25,6 +29,8 @@ make tui        # Terminal 2 — TUI
 ```
 
 Run `make` (no target) to see all available targets.
+
+Once the engine is running, the interactive API docs are at **http://localhost:8000**.
 
 ## Architecture
 

@@ -23,6 +23,10 @@ docker compose up
 The image is built from `engine/Dockerfile`.
 Port `8000` is exposed and forwarded to the host.
 
+## Interactive docs
+
+Once the engine server is running, open **http://localhost:8000** — it redirects to the [Scalar](https://scalar.com) API reference at `/scalar`.
+
 ## API
 
 All responses include a `state` object (see [Game state](#game-state)).
