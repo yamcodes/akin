@@ -6,5 +6,7 @@
     </content>
     <orderEntry type="jdk" jdkName="uv (engine)" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="module" module-name="tui" />
+    <orderEntry type="module" module-name="akin" />
   </component>
 </module>

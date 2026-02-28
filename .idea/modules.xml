@@ -3,6 +3,8 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/akin.iml" filepath="$PROJECT_DIR$/.idea/akin.iml" />
+      <module fileurl="file://$PROJECT_DIR$/engine/.idea/engine.iml" filepath="$PROJECT_DIR$/engine/.idea/engine.iml" />
+      <module fileurl="file://$PROJECT_DIR$/tui/.idea/tui.iml" filepath="$PROJECT_DIR$/tui/.idea/tui.iml" />
     </modules>
   </component>
 </project>
