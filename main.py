@@ -6,7 +6,8 @@
 import sys
 
 import readchar
-from akinator import Akinator, CantGoBackAnyFurther, InvalidChoiceError, InvalidLanguageError
+from akinator.client import Akinator
+from akinator.exceptions import CantGoBackAnyFurther, InvalidChoiceError, InvalidLanguageError
 
 USAGE = "use: akinator [language (en|es|pt|...)]"
 
