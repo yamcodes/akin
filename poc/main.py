@@ -8,10 +8,14 @@ import sys
 
 import readchar
 from akinator.client import Akinator
-from akinator.exceptions import CantGoBackAnyFurther, InvalidChoiceError, InvalidLanguageError
+from akinator.exceptions import (
+    CantGoBackAnyFurther,
+    InvalidChoiceError,
+    InvalidLanguageError,
+)
 
 HELP = """\
-Akinator CLI — guess a character by answering yes/no questions.
+Akinator CLI - guess a character by answering yes/no questions.
 
 Usage:
   akinator [language] [--debug]
@@ -68,7 +72,7 @@ def interactive(language="en", debug=False):
     try:
         while not aki.finished:
             if aki.win:
-                print(f"\nI think it's: {aki.name_proposition} — {aki.description_proposition}")
+                print(f"\nI think it's: {aki.name_proposition} - {aki.description_proposition}")
                 raw = read_key("Am I right? [y]es / [n]o: ")
                 if raw == "y":
                     aki.choose()
@@ -101,7 +105,7 @@ def interactive(language="en", debug=False):
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Akinator CLI — guess a character by answering yes/no questions.")
+    parser = argparse.ArgumentParser(description="Akinator CLI - guess a character by answering yes/no questions.")
     parser.add_argument("language", nargs="?", default="en", help="Two-letter language code (default: en)")
     parser.add_argument("--debug", action="store_true", help="Show progression and confidence after each answer")
     args = parser.parse_args()
