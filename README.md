@@ -66,7 +66,7 @@ TUI is packaged as a proper Python package and distributed via Homebrew.
 Requires converting `tui/` from a flat-module layout to a real package (`akin_tui/`)
 so that non-Python assets (e.g. `app.tcss`) are included in the wheel.
 
-### Phase 5: Hypermedia
+### Phase 4: Hypermedia
 
 A `web/` server is added for browser clients.
 The engine has no awareness of who is calling it.
@@ -84,7 +84,7 @@ graph LR
 | `engine/` | Game logic + FastAPI HTTP server ([README](engine/README.md)) |
 | `tui/` | Textual TUI client ([README](tui/README.md)) |
 | `poc/` | Original single-file proof of concept |
-| `web/` | Spring Boot hypermedia server (Phase 3, not yet implemented) |
+| `web/` | Spring Boot hypermedia server (Phase 4, not yet implemented) |
 | `docker-compose.yml` | Starts the engine service |
 
 ## Acknowledgements
