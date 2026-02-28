@@ -12,6 +12,12 @@ from bs4 import BeautifulSoup
 from twisted.internet import defer, reactor
 from twisted.web import client
 
+DEBUG = False
+
+def dbg(*args):
+    if DEBUG:
+        print("[DEBUG]", *args)
+
 
 class AkinatorChat:
     def __init__(self, name, age, gender, language="en"):
