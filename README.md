@@ -10,7 +10,7 @@ The project is built in phases, each adding a layer while keeping the previous o
 
 ```mermaid
 graph LR
-    poc["poc/main.py<br/>(UI + game logic + HTTP)"]
+    poc["poc/main.py<br/>(UI + game logic)"] --import--> lib["akinator lib"]
 ```
 
 **Phase 1** - TUI talks directly to the engine via Python import:
