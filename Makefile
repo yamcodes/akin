@@ -1,4 +1,4 @@
-.PHONY: help setup setup-engine setup-tui engine tui docker start
+.PHONY: help setup setup-engine setup-tui engine tui build docker start
 
 help:
 	@echo "Usage: make <target>"
@@ -8,6 +8,7 @@ help:
 	@echo "  setup-tui     Install tui deps"
 	@echo "  engine        Start the engine HTTP server (local)"
 	@echo "  tui           Start the TUI (pass ARGS='en --debug' for options)"
+	@echo "  build         Build Docker images"
 	@echo "  docker        Start services via Docker Compose"
 	@echo "  start         Start full stack: engine via Docker + TUI"
 
@@ -24,6 +25,9 @@ engine:
 
 tui:
 	cd tui && uv run python main.py $(ARGS)
+
+build:
+	docker compose build
 
 docker:
 	docker compose up

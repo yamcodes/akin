@@ -10,6 +10,7 @@ dependencies = [
     { name = "akinator" },
     { name = "curl-cffi" },
     { name = "fastapi" },
+    { name = "scalar-fastapi" },
     { name = "uvicorn", extra = ["standard"] },
 ]
 
@@ -18,6 +19,7 @@ requires-dist = [
     { name = "akinator" },
     { name = "curl-cffi" },
     { name = "fastapi" },
+    { name = "scalar-fastapi" },
     { name = "uvicorn", extras = ["standard"] },
 ]
 
@@ -563,6 +565,15 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/f3/61/d7545dafb7ac2230c70d38d31cbfe4cc64f7144dc41f6e4e4b78ecd9f5bb/requests-toolbelt-1.0.0.tar.gz", hash = "sha256:7681a0a3d047012b5bdc0ee37d7f8f07ebe76ab08caeccfc3921ce23c88d5bc6", size = 206888, upload-time = "2023-05-01T04:11:33.229Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/3f/51/d4db610ef29373b879047326cbf6fa98b6c1969d6f6dc423279de2b1be2c/requests_toolbelt-1.0.0-py2.py3-none-any.whl", hash = "sha256:cccfdd665f0a24fcf4726e690f65639d272bb0637b9b92dfd91a5568ccf6bd06", size = 54481, upload-time = "2023-05-01T04:11:28.427Z" },
+]
+
+[[package]]
+name = "scalar-fastapi"
+version = "1.6.2"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/69/27/4fefc485d6d3b32c59e48cc5d7ba20180dc15984b4b50cbc8a0da18670d6/scalar_fastapi-1.6.2.tar.gz", hash = "sha256:2aea052b8ebd585f8f4a71c2eeb4a7250f4dba1172aa056464ff0fe7ae49bdd5", size = 8069, upload-time = "2026-02-11T21:26:22.766Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/30/16/fafcc10900b1d330641444163adac525322628684d04dc24bd8d5ab7109a/scalar_fastapi-1.6.2-py3-none-any.whl", hash = "sha256:922ff1823a5bc5dc6b6df318a468e1a8401babc973e74ccbf79154f50de5e13f", size = 7443, upload-time = "2026-02-11T21:26:21.175Z" },
 ]
 
 [[package]]

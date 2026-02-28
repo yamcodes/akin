@@ -6,5 +6,6 @@ dependencies = [
     "akinator",
     "curl-cffi",
     "fastapi",
+    "scalar-fastapi",
     "uvicorn[standard]",
 ]

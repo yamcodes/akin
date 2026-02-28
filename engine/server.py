@@ -16,11 +16,23 @@ from exceptions import (
     StartupError,
 )
 from fastapi import FastAPI, HTTPException
+from fastapi.responses import HTMLResponse, RedirectResponse
 from pydantic import BaseModel
+from scalar_fastapi import get_scalar_api_reference
 
 from engine import AkinatorEngine, GameState
 
 app = FastAPI(title="Akin Engine")
+
+
+@app.get("/", include_in_schema=False)
+def root() -> RedirectResponse:
+    return RedirectResponse(url="/scalar")
+
+
+@app.get("/scalar", include_in_schema=False)
+def scalar_ui() -> HTMLResponse:
+    return get_scalar_api_reference(openapi_url=app.openapi_url, title=app.title)
 
 _sessions: dict[str, AkinatorEngine] = {}
 
