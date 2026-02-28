@@ -40,15 +40,20 @@ class AkinatorChat:
         return self
 
     def parse_html(self, html, init_session=False):
+        dbg("parse_html called, init_session=%s, html length=%d" % (init_session, len(html)))
+        dbg("raw html:\n%s" % html[:2000])
         try:
             soup = BeautifulSoup(html, "html.parser")
             div = soup.find("div", {"class": "question"})
+            dbg("div found: %s" % div)
 
             if init_session:
                 script = div.find("script")
+                dbg("init script tag: %s" % script)
                 self.partie, self.signature = re.search(
                     r"(\d+),(\d+)", script.text
                 ).groups()
+                dbg("partie=%s signature=%s" % (self.partie, self.signature))
                 script.extract()
 
             # no question number means it found the character,
@@ -56,7 +61,8 @@ class AkinatorChat:
             try:
                 n_question = div.find("span", {"class": "n_question"})
                 n_question.extract()
-            except:
+            except Exception as e:
+                dbg("n_question extract failed: %s" % e)
                 try:
                     script = div.find("script")
                     # result[0] = url
@@ -65,7 +71,8 @@ class AkinatorChat:
                     # result[3] = occupation (singer, etc)
                     result = re.findall('("[^"]+)', script.text)
                     character = result[2].strip('"').split("/")[0]
-                except:
+                except Exception as e:
+                    dbg("character extract failed: %s" % e)
                     return (0, div.text)
                 else:
                     self.done = True
@@ -73,8 +80,8 @@ class AkinatorChat:
                     return (1, "%s %s" % (div.text, character))
             else:
                 return (2, div.text)
-        except:
-            pass
+        except Exception as e:
+            dbg("parse_html outer exception: %s" % e)
 
     def put_answer(self, answer):
         # akinator takes 0=yes, 1=no, 2=don't know, 3=probably, 4=not really
@@ -93,6 +100,7 @@ class AkinatorChat:
 
         if self.session:
             url = "%s/repondre_propose.php?%s" % (
+
                 self.server,
                 urlencode(
                     {
@@ -110,7 +118,8 @@ class AkinatorChat:
             )
 
             self.count += 1
-            return client.getPage(url).addCallback(self.parse_html)
+            dbg("GET %s" % url)
+            return client.getPage(url.encode()).addCallback(self.parse_html)
         else:
             # new session
             url = "%s/new_session.php?%s" % (
@@ -131,7 +140,8 @@ class AkinatorChat:
             )
 
             self.session = True
-            return client.getPage(url).addCallback(lambda s: self.parse_html(s, True))
+            dbg("GET %s" % url)
+            return client.getPage(url.encode()).addCallback(lambda s: self.parse_html(s, True))
 
 
 @defer.inlineCallbacks
@@ -142,7 +152,19 @@ def interactive(*args):
     akinator = AkinatorChat(*args)
 
     for cmd in akinator:
-        r, text = yield cmd
+        try:
+            result = yield cmd
+        except Exception as e:
+            print("[ERROR] HTTP request failed: %s" % e)
+            break
+
+        dbg("parse_html returned: %s" % repr(result))
+
+        if result is None:
+            print("[ERROR] parse_html returned None — the API response was not parseable.")
+            break
+
+        r, text = result
 
         if r == 2:  # Question
             answer = input("%s " % text)
@@ -183,12 +205,16 @@ if __name__ == "__main__":
         print(HELP)
         sys.exit(0)
 
+    args = [a for a in sys.argv[1:] if a != "--debug"]
+    if "--debug" in sys.argv:
+        DEBUG = True
+
     try:
-        name = sys.argv[1]
-        age = int(sys.argv[2])
-        gender = sys.argv[3].upper()
+        name = args[0]
+        age = int(args[1])
+        gender = args[2].upper()
         try:
-            lang = sys.argv[4]
+            lang = args[3]
         except:
             lang = "en"
 
