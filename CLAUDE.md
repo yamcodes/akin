@@ -2,43 +2,55 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
-## Running the Script
+## Running
 
 ```bash
-python main.py [language]
+poetry run python tui/main.py [language] [--debug]
 # Examples:
-python main.py
-python main.py es
-python main.py en --debug
+poetry run python tui/main.py
+poetry run python tui/main.py es
+poetry run python tui/main.py en --debug
 ```
 
 - `language`: two-letter code (e.g., `en`, `es`, `pt`); defaults to `en`
-- `--debug`: prints progression % and step after each answer
+- `--debug`: shows progression % and step after each answer
+
+The PoC (terminal, no TUI) is still available at `poc/main.py`.
 
 ## Dependencies
 
-This is a **Python 3** script. Dependencies are managed via a `.venv` virtualenv:
+Managed via **Poetry**:
 
 ```bash
-source .venv/bin/activate
-pip install akinator readchar cloudscraper
+poetry install
 ```
 
-Or use the alias defined in `~/.bash_aliases`:
-
-```bash
-akinator [language] [--debug]
-```
+Dependencies: `akinator`, `readchar`, `cloudscraper`, `textual`.
 
 ## Architecture
 
-Single-file script (`main.py`) with two components:
+```
+engine/          # Pure game logic — no UI
+  exceptions.py  # EngineError hierarchy
+  engine.py      # AkinatorEngine + GameState dataclass
+  __init__.py
 
-- **`read_key(prompt)`** — prints a prompt, reads a single keypress via `readchar`, handles Ctrl+C by raising `KeyboardInterrupt`.
+tui/             # Textual TUI frontend
+  app.py         # AkinatorApp (App) — worker pattern, state machine
+  widgets.py     # QuestionHistory, CurrentQuestion, WinProposal, StatusBar
+  app.tcss       # Textual CSS
+  main.py        # Entry point: argparse → AkinatorApp().run()
+  __init__.py
 
-- **`interactive(language, debug)`** — drives the game loop using the `akinator` (Ombucha) library. Starts a session, loops until `aki.finished`, handles win proposals (`aki.win`) by asking for confirmation, maps shorthand keys (`?`, `+`, `-`) to the library's answer strings, and prints debug info if `--debug` is passed.
+poc/
+  main.py        # Original single-file PoC (readchar, no Textual)
+```
+
+**`AkinatorEngine`** wraps the sync `akinator.client.Akinator`. All methods return a frozen `GameState` dataclass. Workers run engine calls off the main thread.
+
+**Key bindings**: `y n ? + -` (answers), `b` (back), `q` (quit).
 
 ## Notes
 
 - The old 2012 akinator.com API is dead. The `akinator` (Ombucha) library uses `cloudscraper` to bypass Cloudflare.
-- The script was previously named `akinator.py` but renamed to `main.py` to avoid a Python import name conflict with the `akinator` package.
+- `tui/app.py` uses `on_key` directly (not BINDINGS) so that `?`, `+`, `-` are captured correctly.
