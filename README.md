@@ -51,7 +51,7 @@ graph LR
 ### Phase 2: HTTP communication ← current
 
 Engine and TUI are independent services (separate `uv` projects).
-They communicate over HTTP. Engine ships as a Docker image; TUI distributes via Homebrew.
+They communicate over HTTP. Engine ships as a Docker image.
 
 **Cloudflare note:** akinator.com is behind Cloudflare. The engine uses [`curl-cffi`](https://github.com/yifeikong/curl-cffi) to impersonate Chrome's TLS fingerprint, which passes bot detection reliably in any environment including Docker. The `akinator` library's default (`cloudscraper`) only solves JS challenges but leaves Python's TLS fingerprint exposed, causing 403s in containers.
 
@@ -60,7 +60,13 @@ graph LR
     tui["tui/"] --HTTP--> engine["engine/ :8000"]
 ```
 
-### Phase 3: Hypermedia
+### Phase 3: TUI distribution
+
+TUI is packaged as a proper Python package and distributed via Homebrew.
+Requires converting `tui/` from a flat-module layout to a real package (`akin_tui/`)
+so that non-Python assets (e.g. `app.tcss`) are included in the wheel.
+
+### Phase 5: Hypermedia
 
 A `web/` server is added for browser clients.
 The engine has no awareness of who is calling it.
