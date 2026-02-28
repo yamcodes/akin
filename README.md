@@ -57,5 +57,5 @@ The engine only ever wraps the akinator library – it has no awareness of who i
 
 ## Acknowledgements
 
-- Thanks [fiorix](https://gist.github.com/fiorix) for the original gist: https://gist.github.com/fiorix/3152830
-- Thanks [Omkaar](https://github.com/Ombucha) for the [`akinator`](https://github.com/Ombucha/akinator.py) library, which powers the game session and Cloudflare bypass
+- Thanks [fiorix](https://gist.github.com/fiorix) for the [akinator.py gist](https://gist.github.com/fiorix/3152830) which inspired this project
+- Thanks [Omkaar](https://github.com/Ombucha) for the [akinator.py library](https://github.com/Ombucha/akinator.py) which powers the game engine
