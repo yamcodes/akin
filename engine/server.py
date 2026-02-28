@@ -4,6 +4,12 @@ import logging
 import uuid
 
 import uvicorn
+from fastapi import FastAPI, HTTPException
+from fastapi.responses import HTMLResponse, RedirectResponse
+from pydantic import BaseModel, Field
+from scalar_fastapi import get_scalar_api_reference
+
+from engine import AkinatorEngine, GameState
 from exceptions import (
     CantGoBackError,
     EngineError,
@@ -13,12 +19,6 @@ from exceptions import (
     SessionTimeoutError,
     StartupError,
 )
-from fastapi import FastAPI, HTTPException
-from fastapi.responses import HTMLResponse, RedirectResponse
-from pydantic import BaseModel, Field
-from scalar_fastapi import get_scalar_api_reference  # noqa:  # noqa: E402
-
-from engine import AkinatorEngine, GameState
 
 logger = logging.getLogger(__name__)
 
