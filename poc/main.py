@@ -77,7 +77,11 @@ def interactive(language="en", debug=False):
                 if raw == "y":
                     aki.choose()
                 else:
-                    aki.exclude()
+                    try:
+                        aki.exclude()
+                    except Exception:
+                        print("\nI give up! Good game.")
+                        return
                 continue
 
             raw = read_key(f"{aki.step + 1}. {aki.question} ")
