@@ -4,26 +4,25 @@ Screen {
 
 QuestionHistory {
     height: 1fr;
-    border: round $surface;
+    padding: 0 2;
 }
 
 CurrentQuestion {
     height: auto;
     min-height: 3;
-    border: round $accent;
-    padding: 0 1;
+    padding: 1 2;
+    background: $boost;
 }
 
 WinProposal {
     display: none;
     height: auto;
-    border: round $success;
-    padding: 0 1;
-    color: $success;
+    padding: 1 2;
+    background: $boost;
 }
 
 StatusBar {
     height: 1;
-    color: $warning;
-    padding: 0 1;
+    padding: 0 2;
+    color: $text-muted;
 }

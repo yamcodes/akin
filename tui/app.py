@@ -137,7 +137,7 @@ class AkinatorApp(App):
         if state.finished and state.win:
             win_proposal.hide()
             current.show_result(
-                f"[bold green]I got it![/bold green] [bold]{state.name_proposition}[/bold]!\n"
+                f"[bold]{state.name_proposition}[/bold]\n"
                 f"[dim]{state.description_proposition}[/dim]"
             )
             self._game_over = True
@@ -146,7 +146,7 @@ class AkinatorApp(App):
 
         if state.finished and not state.win:
             win_proposal.hide()
-            current.show_result("[bold red]I give up![/bold red] Good game!")
+            current.show_result("[dim]I give up. Good game.[/dim]")
             self._game_over = True
             self._awaiting_win = False
             return
