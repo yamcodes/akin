@@ -5,19 +5,25 @@ Bringing the Akinator experience to the terminal — and eventually to the brows
 ## Quick start
 
 ```bash
+make setup    # install deps for both services (one-time)
+
 # Terminal 1 — start the engine
-cd engine && uv sync && uv run python server.py
+make engine
 
 # Terminal 2 — start the TUI
-cd tui && uv sync && uv run python main.py
+make tui                      # English (default)
+make tui ARGS="es"            # Spanish
+make tui ARGS="en --debug"    # show step + progression %
 ```
 
 Or with Docker:
 
 ```bash
-docker compose up          # starts the engine on :8000
-cd tui && uv run python main.py
+make docker        # starts the engine on :8000
+make tui           # TUI runs natively, points to localhost:8000
 ```
+
+Run `make` (no target) to see all available targets.
 
 ## Architecture
 
