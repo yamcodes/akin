@@ -6,7 +6,9 @@ Bringing the Akinator experience to the terminal. (And hopefully to a clean inte
 
 The project is built in phases, each adding a layer while keeping the previous one intact as a reference.
 
-**PoC** – single file, no separation of concerns ([`poc` tag](https://github.com/yamcodes/akin/tree/poc)):
+### Phase 0: Proof of Concept
+
+[Single `main.py` file](https://github.com/yamcodes/akin/blob/poc/main.py), no separation of concerns.
 
 ![PoC demo](assets/poc.png)
 
@@ -15,21 +17,27 @@ graph LR
     poc["main.py<br/>(UI + game logic)"] --import--> lib["akinator lib"]
 ```
 
-**Phase 1** – TUI talks directly to the engine via Python import:
+### Phase 1: Engine-UI separation
+
+TUI talks directly to the engine via Python import:
 
 ```mermaid
 graph LR
     tui["tui/"] --import--> engine["engine/"]
 ```
 
-**Phase 2** – engine gains an HTTP interface, TUI talks to it over HTTP:
+### Phase 2: HTTP communication
+
+Engine gains an HTTP interface, TUI talks to it over HTTP:
 
 ```mermaid
 graph LR
     tui["tui/"] --http--> engine["engine/"]
 ```
 
-**Phase 3** – `web/` added to serve the browser (hypermedia); browser is just Chrome/Firefox, no dedicated repo code:
+### Phase 3: Hypermedia
+
+`web/` added to serve the browser (hypermedia); browser is just Chrome/Firefox, no dedicated repo code:
 
 ```mermaid
 graph LR
