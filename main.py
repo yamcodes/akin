@@ -3,6 +3,7 @@
 #
 # Interactive command line crawler to akinator.com
 
+import argparse
 import sys
 
 import readchar
@@ -62,8 +63,7 @@ def interactive(language="en", debug=False):
         print(f"Invalid language '{language}'. Falling back to English.")
         aki.start_game(language="en")
     except Exception as e:
-        print(f"Error starting game: {e}")
-        return
+        sys.exit(f"Error starting game: {e}")
 
     try:
         while not aki.finished:
@@ -93,8 +93,7 @@ def interactive(language="en", debug=False):
             except InvalidChoiceError:
                 print("Invalid answer. Use: y, n, ?, +, -, b")
             except Exception as e:
-                print(f"Error: {e}")
-                return
+                sys.exit(f"Error: {e}")
     except KeyboardInterrupt:
         return
 
@@ -102,12 +101,9 @@ def interactive(language="en", debug=False):
 
 
 if __name__ == "__main__":
-    if len(sys.argv) > 1 and sys.argv[1] in ("-h", "--help"):
-        print(HELP)
-        sys.exit(0)
+    parser = argparse.ArgumentParser(description="Akinator CLI — guess a character by answering yes/no questions.")
+    parser.add_argument("language", nargs="?", default="en", help="Two-letter language code (default: en)")
+    parser.add_argument("--debug", action="store_true", help="Show progression and confidence after each answer")
+    args = parser.parse_args()
 
-    debug_mode = "--debug" in sys.argv
-    argv = [a for a in sys.argv[1:] if a != "--debug"]
-    lang = argv[0] if argv else "en"
-
-    interactive(lang, debug=debug_mode)
+    interactive(args.language, debug=args.debug)
