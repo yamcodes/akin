@@ -1,65 +1,78 @@
 # akin
 
-Bringing the Akinator experience to the terminal. (And hopefully to a clean interface in the browser someday.)
+Bringing the Akinator experience to the terminal — and eventually to the browser.
+
+## Quick start
+
+```bash
+# Terminal 1 — start the engine
+cd engine && uv sync && uv run python server.py
+
+# Terminal 2 — start the TUI
+cd tui && uv sync && uv run python main.py
+```
+
+Or with Docker:
+
+```bash
+docker compose up          # starts the engine on :8000
+cd tui && uv run python main.py
+```
 
 ## Architecture
 
 The project is built in phases, each adding a layer while keeping the previous one intact as a reference.
 
-### Phase 0: Proof of Concept
+### Phase 0: Proof of concept
 
-[Single `main.py` file](https://github.com/yamcodes/akin/blob/poc/main.py), no separation of concerns.
-
-![PoC demo](assets/poc.png)
+[Single `poc/main.py`](poc/main.py) — UI and game logic in one file.
 
 ```mermaid
 graph LR
-    poc["main.py<br/>(UI + game logic)"] --import--> lib["akinator lib"]
+    poc["poc/main.py<br/>(UI + game logic)"] --> lib["akinator lib"]
 ```
 
-### Phase 1: Engine-UI separation
+### Phase 1: Engine–UI separation
 
-[`engine/` + `tui/`](https://github.com/yamcodes/akin/tree/phase1), TUI talks directly to the engine via Python import.
-
-![Phase 1 demo](assets/phase1.png)
+`engine/` and `tui/` as Python packages; TUI imports the engine directly.
 
 ```mermaid
 graph LR
     tui["tui/"] --import--> engine["engine/"]
 ```
 
-### Phase 2: HTTP communication
+### Phase 2: HTTP communication ← current
 
-Engine gains an HTTP interface, TUI talks to it over HTTP.
-Engine and TUI are independent `uv` projects (separate `pyproject.toml` / `uv.lock`).
-Engine ships as a Docker image deployable to Railway; TUI distributes via Homebrew.
+Engine and TUI are independent services (separate `uv` projects).
+They communicate over HTTP. Engine ships as a Docker image; TUI distributes via Homebrew.
 
 ```mermaid
 graph LR
-    tui["tui/"] --http--> engine["engine/"]
+    tui["tui/"] --HTTP--> engine["engine/ :8000"]
 ```
 
 ### Phase 3: Hypermedia
 
-`web/` added to serve the browser (hypermedia); browser is just Chrome/Firefox, no dedicated repo code:
+A `web/` server is added for browser clients.
+The engine has no awareness of who is calling it.
 
 ```mermaid
 graph LR
-    tui["tui/"] --http--> engine["engine/"]
-    browser["🌐 browser"] --http--> web["web/"] --http--> engine["engine/"]
+    tui["tui/"] --HTTP--> engine["engine/ :8000"]
+    browser["browser"] --HTTP--> web["web/"] --HTTP--> engine
 ```
 
-The engine only ever wraps the akinator library – it has no awareness of who is calling it.
+## Repository layout
 
-## Structure
-
-| Directory | Description                                        |
-|-----------|----------------------------------------------------|
-| `engine/` | Python wrapper around the akinator library         |
-| `tui/`    | Frontend (Textual)                                 |
-| `web/`    | Spring Boot server, hypermedia, session state      |
+| Path | Description |
+|------|-------------|
+| `engine/` | Game logic + FastAPI HTTP server ([README](engine/README.md)) |
+| `tui/` | Textual TUI client ([README](tui/README.md)) |
+| `poc/` | Original single-file proof of concept |
+| `web/` | Spring Boot hypermedia server (Phase 3, not yet implemented) |
+| `docker-compose.yml` | Starts the engine service |
 
 ## Acknowledgements
 
-- Thanks [fiorix](https://gist.github.com/fiorix) for the [akinator.py gist](https://gist.github.com/fiorix/3152830) which inspired this project
-- Thanks [Omkaar](https://github.com/Ombucha) for the [akinator.py library](https://github.com/Ombucha/akinator.py) which powers the game engine
+- [fiorix](https://gist.github.com/fiorix) for the [akinator.py gist](https://gist.github.com/fiorix/3152830) that inspired this project
+- [Ombucha](https://github.com/Ombucha) for the [akinator.py library](https://github.com/Ombucha/akinator.py) that powers the engine
