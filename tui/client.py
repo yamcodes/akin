@@ -15,6 +15,7 @@ class InvalidLanguageError(EngineError): ...
 class InvalidAnswerError(EngineError): ...
 class CantGoBackError(EngineError): ...
 class SessionTimeoutError(EngineError): ...
+class SessionNotFound(EngineError): ...
 class NetworkError(EngineError): ...
 
 
@@ -43,6 +44,7 @@ _ERROR_MAP: dict[str, type[EngineError]] = {
     "InvalidAnswerError": InvalidAnswerError,
     "CantGoBackError": CantGoBackError,
     "SessionTimeoutError": SessionTimeoutError,
+    "SessionNotFound": SessionNotFound,
     "NetworkError": NetworkError,
 }
 
@@ -113,3 +115,6 @@ class EngineClient:
 
     def exclude(self) -> GameState:
         return self._call("exclude")
+
+    def close(self) -> None:
+        self._http.close()

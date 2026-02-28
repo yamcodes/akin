@@ -8,8 +8,8 @@ Phase 2 requires two processes (engine server + TUI):
 
 ```bash
 # One-time setup
-cd engine && uv sync
-cd tui && uv sync
+(cd engine && uv sync)
+(cd tui && uv sync)
 
 # Terminal 1: start the engine HTTP server
 cd engine && uv run python server.py
@@ -43,8 +43,8 @@ TUI runs natively, pointing to the Dockerized engine (`http://localhost:8000`).
 Managed via **uv** (per-service):
 
 ```bash
-cd engine && uv sync   # installs engine deps + generates engine/uv.lock
-cd tui && uv sync      # installs tui deps + generates tui/uv.lock
+(cd engine && uv sync)   # installs engine deps + generates engine/uv.lock
+(cd tui && uv sync)      # installs tui deps + generates tui/uv.lock
 ```
 
 Both `engine/uv.lock` and `tui/uv.lock` are committed for reproducible installs.
@@ -90,4 +90,3 @@ Python's `sys.path` includes `.` (cwd), so imports are absolute within the servi
 ## Notes
 
 - The old 2012 akinator.com API is dead. The `akinator` (Ombucha) library uses `cloudscraper` to bypass Cloudflare.
-- `tui/app.py` uses `on_key` directly (not BINDINGS) so that `?`, `+`, `-` are captured correctly.

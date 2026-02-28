@@ -13,6 +13,7 @@ from client import (
     InvalidAnswerError,
     InvalidLanguageError,
     NetworkError,
+    SessionNotFound,
     SessionTimeoutError,
     StartupError,
 )
@@ -33,6 +34,7 @@ class AkinatorApp(App):
         Binding("b", "go_back", "Back"),
         Binding("q", "quit", "Quit"),
     )
+
 
     def __init__(self, language: str = "en", debug: bool = False, engine_url: str = "http://localhost:8000") -> None:
         super().__init__()
@@ -191,6 +193,10 @@ class AkinatorApp(App):
         elif isinstance(exc, InvalidAnswerError):
             status.flash("Invalid answer")
             current.show_question(self._cur_step, self._cur_question)
+        elif isinstance(exc, SessionNotFound):
+            status.flash("Session not found. Please restart.")
+            self._game_over = True
+            current.show_result("[dim]Session not found. Please restart.[/dim]")
         elif isinstance(exc, SessionTimeoutError):
             status.flash("Session timed out. Please restart.")
             self._game_over = True
@@ -205,6 +211,9 @@ class AkinatorApp(App):
     # ------------------------------------------------------------------ #
     # Helpers                                                              #
     # ------------------------------------------------------------------ #
+
+    def on_unmount(self) -> None:
+        self._engine.close()
 
     def _set_loading(self, loading: bool) -> None:
         self._loading = loading

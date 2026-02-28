@@ -1,7 +1,0 @@
-Metadata-Version: 2.4
-Name: akin-tui
-Version: 0.1.0
-Requires-Python: >=3.11
-Requires-Dist: textual
-Requires-Dist: httpx
-Requires-Dist: readchar
