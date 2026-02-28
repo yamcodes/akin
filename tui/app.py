@@ -7,7 +7,7 @@ from textual.widgets import Footer
 from textual.worker import Worker, WorkerState
 
 from engine import (
-    AkinatorEngine,
+    EngineClient,
     GameState,
     CantGoBackError,
     InvalidAnswerError,
@@ -34,11 +34,11 @@ class AkinatorApp(App):
         Binding("q", "quit", "Quit"),
     )
 
-    def __init__(self, language: str = "en", debug: bool = False) -> None:
+    def __init__(self, language: str = "en", debug: bool = False, engine_url: str = "http://localhost:8000") -> None:
         super().__init__()
         self._language = language
         self._debug = debug
-        self._engine = AkinatorEngine()
+        self._engine = EngineClient(engine_url)
         self._loading = False
         self._game_over = False
         self._awaiting_win = False

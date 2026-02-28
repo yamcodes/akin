@@ -1,3 +1,4 @@
+from .client import EngineClient
 from .engine import AkinatorEngine, GameState, ANSWER_ALIASES
 from .exceptions import (
     EngineError,
@@ -11,6 +12,7 @@ from .exceptions import (
 
 __all__ = [
     "AkinatorEngine",
+    "EngineClient",
     "ANSWER_ALIASES",
     "CantGoBackError",
     "EngineError",
