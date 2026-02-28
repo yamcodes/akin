@@ -40,6 +40,16 @@ ANSWER_ALIASES = {
 }
 
 
+def read_key(prompt):
+    print(prompt, end="", flush=True)
+    key = readchar.readchar()
+    if key == readchar.key.CTRL_C:
+        print()
+        raise KeyboardInterrupt
+    print(key)
+    return key
+
+
 def interactive(language="en"):
     print("Think about a real or fictional character. I will try to guess who it is.\n")
     print("Answer: [y] Yes  [n] No  [?] Don't know  [+] Probably  [-] Probably not  [b] Back\n")
@@ -49,51 +59,44 @@ def interactive(language="en"):
     try:
         aki.start_game(language=language)
     except InvalidLanguageError:
-        print("Invalid language '%s'. Falling back to English." % language)
+        print(f"Invalid language '{language}'. Falling back to English.")
         aki.start_game(language="en")
     except Exception as e:
-        print("Error starting game: %s" % e)
+        print(f"Error starting game: {e}")
         return
 
-    while not aki.finished:
-        if aki.win:
-            print("\nI think it's: %s — %s" % (aki.name_proposition, aki.description_proposition))
-            print("Am I right? [y]es / [n]o: ", end="", flush=True)
-            raw = readchar.readchar()
-            if raw == readchar.key.CTRL_C:
-                print()
-                return
-            print(raw)
-            if raw in ("y", "yes"):
-                aki.choose()
-            else:
-                aki.exclude()
-            continue
+    try:
+        while not aki.finished:
+            if aki.win:
+                print(f"\nI think it's: {aki.name_proposition} — {aki.description_proposition}")
+                raw = read_key("Am I right? [y]es / [n]o: ")
+                if raw == "y":
+                    aki.choose()
+                else:
+                    aki.exclude()
+                continue
 
-        print("%d. %s " % (aki.step + 1, aki.question), end="", flush=True)
-        raw = readchar.readchar()
-        if raw == readchar.key.CTRL_C:
-            print()
-            return
-        print(raw)
+            raw = read_key(f"{aki.step + 1}. {aki.question} ")
 
-        if raw == "b":
+            if raw == "b":
+                try:
+                    aki.back()
+                except CantGoBackAnyFurther:
+                    print("Can't go back any further.")
+                continue
+
+            answer_str = ANSWER_ALIASES.get(raw, raw)
             try:
-                aki.back()
-            except CantGoBackAnyFurther:
-                print("Can't go back any further.")
-            continue
+                aki.answer(answer_str)
+            except InvalidChoiceError:
+                print("Invalid answer. Use: y, n, ?, +, -, b")
+            except Exception as e:
+                print(f"Error: {e}")
+                return
+    except KeyboardInterrupt:
+        return
 
-        answer_str = ANSWER_ALIASES.get(raw, raw)
-        try:
-            aki.answer(answer_str)
-        except InvalidChoiceError:
-            print("Invalid answer. Use: y, n, ?, +, -, b")
-        except Exception as e:
-            print("Error: %s" % e)
-            return
-
-    print("\n%s" % aki.question)
+    print(f"\n{aki.question}")
 
 
 if __name__ == "__main__":
