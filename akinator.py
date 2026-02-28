@@ -146,7 +146,37 @@ def interactive(*args):
             break
 
 
+USAGE = "use: akinator <name> <age> <gender> [language (en|es|pt)]"
+
+HELP = """\
+Akinator CLI — guess a character by answering yes/no questions.
+
+Usage:
+  akinator <name> <age> <gender> [language]
+
+Arguments:
+  name      Your name
+  age       Your age (must be greater than 8)
+  gender    M or F
+  language  Two-letter language code (default: en)
+
+Answers during the game:
+  y   Yes
+  n   No
+  ?   Don't know
+  +   Probably
+  -   Not really
+
+Examples:
+  akinator Alice 25 F
+  akinator Alice 25 F es\
+"""
+
 if __name__ == "__main__":
+    if len(sys.argv) > 1 and sys.argv[1] in ("-h", "--help"):
+        print(HELP)
+        sys.exit(0)
+
     try:
         name = sys.argv[1]
         age = int(sys.argv[2])
@@ -162,7 +192,7 @@ if __name__ == "__main__":
         print("oops! ", e)
         sys.exit(0)
     except Exception as e:
-        print("use: akinator <name> <age> <gender> [language (en|es|pt)]")
+        print(USAGE)
         sys.exit(0)
 
     interactive(name, age, gender, lang).addCallback(lambda *v: reactor.stop())
