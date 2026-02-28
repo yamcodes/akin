@@ -19,7 +19,9 @@ graph LR
 
 ### Phase 1: Engine-UI separation
 
-TUI talks directly to the engine via Python import:
+TUI talks directly to the engine via Python import.
+
+![Phase 1 demo](assets/phase1.png)
 
 ```mermaid
 graph LR
