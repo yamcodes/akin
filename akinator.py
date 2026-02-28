@@ -6,13 +6,11 @@
 
 import re
 import sys
+from urllib.parse import urlencode
 
-from twisted.internet import defer
-from twisted.internet import reactor
+from bs4 import BeautifulSoup
+from twisted.internet import defer, reactor
 from twisted.web import client
-from urllib import urlencode
-
-from talkinator.BeautifulSoup import BeautifulSoup
 
 
 class AkinatorChat:
@@ -37,13 +35,14 @@ class AkinatorChat:
 
     def parse_html(self, html, init_session=False):
         try:
-            soup = BeautifulSoup(html)
+            soup = BeautifulSoup(html, "html.parser")
             div = soup.find("div", {"class": "question"})
 
             if init_session:
                 script = div.find("script")
-                self.partie, self.signature = re.search("(\d+),(\d+)",
-                                                        script.text).groups()
+                self.partie, self.signature = re.search(
+                    r"(\d+),(\d+)", script.text
+                ).groups()
                 script.extract()
 
             # no question number means it found the character,
@@ -82,48 +81,57 @@ class AkinatorChat:
             self.answer = 0
             self.done = True
 
-    def next(self):
+    def __next__(self):
         if self.done:
             raise StopIteration
 
         if self.session:
-            url = "%s/repondre_propose.php?%s" % (self.server, urlencode({
-                "engine": 0,
-                "fq": "",
-                "nqp": self.count,
-                "partie": self.partie,
-                "prio": 0,
-                "reponse": self.answer,
-                "signature": self.signature,
-                "step_prop": -1,
-                "trouvitude": 0,
-            }))
+            url = "%s/repondre_propose.php?%s" % (
+                self.server,
+                urlencode(
+                    {
+                        "engine": 0,
+                        "fq": "",
+                        "nqp": self.count,
+                        "partie": self.partie,
+                        "prio": 0,
+                        "reponse": self.answer,
+                        "signature": self.signature,
+                        "step_prop": -1,
+                        "trouvitude": 0,
+                    }
+                ),
+            )
 
             self.count += 1
             return client.getPage(url).addCallback(self.parse_html)
         else:
             # new session
-            url = "%s/new_session.php?%s" % (self.server, urlencode({
-                "age": self.age,
-                "email": "",
-                "engine": 0,
-                "joueur": self.name,
-                "ms": 0,
-                "partner_id": 0,
-                "prio": 0,
-                "remember": 0,
-                "sexe": self.gender,
-            }))
+            url = "%s/new_session.php?%s" % (
+                self.server,
+                urlencode(
+                    {
+                        "age": self.age,
+                        "email": "",
+                        "engine": 0,
+                        "joueur": self.name,
+                        "ms": 0,
+                        "partner_id": 0,
+                        "prio": 0,
+                        "remember": 0,
+                        "sexe": self.gender,
+                    }
+                ),
+            )
 
             self.session = True
-            return client.getPage(url).addCallback(lambda s:
-                self.parse_html(s, True))
+            return client.getPage(url).addCallback(lambda s: self.parse_html(s, True))
+
 
 @defer.inlineCallbacks
 def interactive(*args):
-    print "Think about a real or fictional character. " \
-        "I will try to guess who it is.\n"
-    print "Answer: [y]es, [n]o, [?] don't know, [+] probably, [-] not really\n"
+    print("Think about a real or fictional character. I will try to guess who it is.\n")
+    print("Answer: [y]es, [n]o, [?] don't know, [+] probably, [-] not really\n")
 
     akinator = AkinatorChat(*args)
 
@@ -131,10 +139,10 @@ def interactive(*args):
         r, text = yield cmd
 
         if r == 2:  # Question
-            answer = raw_input("%s " % text.encode("utf-8"))
+            answer = input("%s " % text)
             akinator.put_answer(answer)
         else:  # Answer or Error
-            print(text.encode("utf-8"))
+            print(text)
             break
 
 
@@ -150,11 +158,11 @@ if __name__ == "__main__":
 
         assert age > 8, "you must be elder than 8 to play"
         assert gender in ("M", "F"), "you must be either (M)ale or (F)emale"
-    except AssertionError, e:
-        print "oops! ", e
+    except AssertionError as e:
+        print("oops! ", e)
         sys.exit(0)
-    except Exception, e:
-        print "use: akinator <name> <age> <gender> [language (en|es|pt)]"
+    except Exception as e:
+        print("use: akinator <name> <age> <gender> [language (en|es|pt)]")
         sys.exit(0)
 
     interactive(name, age, gender, lang).addCallback(lambda *v: reactor.stop())

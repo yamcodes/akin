@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Black">
+    <option name="sdkName" value="Python 3.12" />
+  </component>
+  <component name="ProjectRootManager" version="2" project-jdk-name="Python 3.14 (akinator-cli)" project-jdk-type="Python SDK" />
+  <component name="RuffConfiguration">
+    <option name="enabled" value="true" />
+    <option name="executableDiscoveryMode" value="PATH" />
+    <option name="pathToExecutable" value="$PROJECT_DIR$/../../../linuxbrew/.linuxbrew/bin/ruff" />
+  </component>
+</project>
