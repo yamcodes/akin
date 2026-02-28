@@ -1,4 +1,4 @@
-# akinator-cli
+# akin
 
 ## Acknlowedgements
 

@@ -5,29 +5,40 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## Running the Script
 
 ```bash
-python akinator.py <name> <age> <gender> [language]
-# Example:
-python akinator.py Alice 25 F en
+python main.py [language]
+# Examples:
+python main.py
+python main.py es
+python main.py en --debug
 ```
 
-- `gender`: `M` or `F`
 - `language`: two-letter code (e.g., `en`, `es`, `pt`); defaults to `en`
-- Age must be greater than 8
+- `--debug`: prints progression % and step after each answer
 
 ## Dependencies
 
-This is a **Python 2** script. It requires:
-- `twisted` (for async HTTP via `twisted.internet` and `twisted.web`)
-- `talkinator` (provides `BeautifulSoup` via `talkinator.BeautifulSoup`)
+This is a **Python 3** script. Dependencies are managed via a `.venv` virtualenv:
 
-There is no `requirements.txt` or package manifest.
+```bash
+source .venv/bin/activate
+pip install akinator readchar cloudscraper
+```
+
+Or use the alias defined in `~/.bash_aliases`:
+
+```bash
+akinator [language] [--debug]
+```
 
 ## Architecture
 
-Single-file script (`akinator.py`) with two components:
+Single-file script (`main.py`) with two components:
 
-- **`AkinatorChat`** — stateful iterator that manages a game session with akinator.com. It tracks session state (`partie`, `signature`, `session`, `count`) and builds URLs for the akinator API endpoints (`new_session.php` on first call, `repondre_propose.php` on subsequent calls). `parse_html` uses BeautifulSoup to extract questions/answers from the HTML response.
+- **`read_key(prompt)`** — prints a prompt, reads a single keypress via `readchar`, handles Ctrl+C by raising `KeyboardInterrupt`.
 
-- **`interactive()`** — a `@defer.inlineCallbacks` coroutine that drives the game loop: iterates over the `AkinatorChat` object, yields each deferred HTTP request, prints questions, reads answers from stdin via `raw_input`, and stops when a result or error is returned.
+- **`interactive(language, debug)`** — drives the game loop using the `akinator` (Ombucha) library. Starts a session, loops until `aki.finished`, handles win proposals (`aki.win`) by asking for confirmation, maps shorthand keys (`?`, `+`, `-`) to the library's answer strings, and prints debug info if `--debug` is passed.
 
-The script targets the old akinator.com API (circa 2012) and may no longer work against the live site.
+## Notes
+
+- The old 2012 akinator.com API is dead. The `akinator` (Ombucha) library uses `cloudscraper` to bypass Cloudflare.
+- The script was previously named `akinator.py` but renamed to `main.py` to avoid a Python import name conflict with the `akinator` package.
