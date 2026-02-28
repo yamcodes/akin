@@ -14,6 +14,9 @@ akinator = "*"
 readchar = "*"
 cloudscraper = "*"
 textual = "*"
+fastapi = "*"
+uvicorn = {extras = ["standard"], version = "*"}
+httpx = "*"
 
 [tool.poetry.scripts]
 akin = "tui.main:main"
