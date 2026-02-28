@@ -27,12 +27,12 @@ graph LR
     tui["tui/"] --http--> engine["engine/"]
 ```
 
-**Phase 3** – browser client added; `server/` sits in front of `engine/` to serve hypermedia:
+**Phase 3** – `web/` added to serve the browser (hypermedia); browser is just Chrome/Firefox, no dedicated repo code:
 
 ```mermaid
 graph LR
     tui["tui/"] --http--> engine["engine/"]
-    browser["browser"] --http--> server["server/"] --http--> engine
+    browser["🌐 browser"] --http--> web["web/"] --http--> engine["engine/"]
 ```
 
 The engine only ever wraps the akinator library – it has no awareness of who is calling it.
@@ -43,9 +43,9 @@ The engine only ever wraps the akinator library – it has no awareness of who i
 |-----------|----------------------------------------------------|
 | `engine/` | Python wrapper around the akinator library         |
 | `tui/`    | Frontend (Textual)                                 |
-| `server/` | Spring Boot server, hypermedia, session state      |
+| `web/`    | Spring Boot server, hypermedia, session state      |
 
 ## Acknowledgements
 
-- Thanks [fiorix](https://gist.github.com/fiorix) for original gist: https://gist.github.com/fiorix/3152830
+- Thanks [fiorix](https://gist.github.com/fiorix) for the original gist: https://gist.github.com/fiorix/3152830
 - Thanks [Omkaar](https://github.com/Ombucha) for the [`akinator`](https://github.com/Ombucha/akinator.py) library, which powers the game session and Cloudflare bypass
