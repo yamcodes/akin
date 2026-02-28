@@ -17,4 +17,4 @@ USER appuser
 
 EXPOSE 8000
 
-CMD ["uv", "run", "python", "server.py"]
+CMD [".venv/bin/python", "server.py"]
