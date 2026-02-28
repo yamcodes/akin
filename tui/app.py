@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from rich.markup import escape
 from textual.app import App, ComposeResult
 from textual.binding import Binding
 from textual.widgets import Footer
@@ -137,8 +138,8 @@ class AkinatorApp(App):
         if state.finished and state.win:
             win_proposal.hide()
             current.show_result(
-                f"[bold]{state.name_proposition}[/bold]\n"
-                f"[dim]{state.description_proposition}[/dim]"
+                f"[bold]{escape(state.name_proposition or '')}[/bold]\n"
+                f"[dim]{escape(state.description_proposition or '')}[/dim]"
             )
             self._game_over = True
             self._awaiting_win = False
@@ -193,6 +194,7 @@ class AkinatorApp(App):
         elif isinstance(exc, SessionTimeoutError):
             status.flash("Session timed out. Please restart.")
             self._game_over = True
+            current.show_result("[dim]Session timed out. Please restart.[/dim]")
         elif isinstance(exc, (NetworkError, StartupError)):
             status.flash(f"Error: {exc}")
             current.show_question(self._cur_step, self._cur_question)

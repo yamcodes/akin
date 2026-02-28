@@ -59,7 +59,9 @@ class WinProposal(Static):
 class StatusBar(Static):
     """Flashes transient error/info messages."""
 
-    _timer = None
+    def __init__(self, *args, **kwargs) -> None:
+        super().__init__(*args, **kwargs)
+        self._timer = None
 
     def flash(self, message: str, duration: float = 3.0) -> None:
         if self._timer is not None:
