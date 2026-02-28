@@ -83,23 +83,23 @@ class AkinatorApp(App):
 
     def _do_start_game(self) -> None:
         self._set_loading(True)
-        self.run_worker(lambda: self._engine.start_game(self._language), thread=True, name="engine")
+        self.run_worker(lambda: self._engine.start_game(self._language), thread=True, name="engine", exit_on_error=False)
 
     def _do_answer(self, key: str) -> None:
         history = self.query_one("#history", QuestionHistory)
         history.append_qa(self._cur_step + 1, self._cur_question, key)
         self._set_loading(True)
-        self.run_worker(lambda: self._engine.answer(key), thread=True, name="engine")
+        self.run_worker(lambda: self._engine.answer(key), thread=True, name="engine", exit_on_error=False)
 
     def _do_back(self) -> None:
         self._set_loading(True)
-        self.run_worker(self._engine.back, thread=True, name="engine")
+        self.run_worker(self._engine.back, thread=True, name="engine", exit_on_error=False)
 
     def _win_accept(self) -> None:
         history = self.query_one("#history", QuestionHistory)
         history.append_win(self._cur_name, "Correct!")
         self._set_loading(True)
-        self.run_worker(self._engine.choose, thread=True, name="engine")
+        self.run_worker(self._engine.choose, thread=True, name="engine", exit_on_error=False)
 
     def _win_reject(self) -> None:
         history = self.query_one("#history", QuestionHistory)

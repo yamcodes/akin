@@ -3,10 +3,6 @@ from __future__ import annotations
 import uuid
 
 import uvicorn
-from fastapi import FastAPI, HTTPException
-from pydantic import BaseModel
-
-from engine import AkinatorEngine, GameState
 from exceptions import (
     CantGoBackError,
     EngineError,
@@ -16,6 +12,10 @@ from exceptions import (
     SessionTimeoutError,
     StartupError,
 )
+from fastapi import FastAPI, HTTPException
+from pydantic import BaseModel
+
+from engine import AkinatorEngine, GameState
 
 app = FastAPI(title="Akin Engine")
 
