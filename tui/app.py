@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from textual.app import App, ComposeResult
-from textual.events import Key
+from textual.binding import Binding
 from textual.widgets import Header, Footer
 from textual.worker import Worker, WorkerState
 
@@ -17,14 +17,18 @@ from engine import (
 )
 from tui.widgets import CurrentQuestion, QuestionHistory, StatusBar, WinProposal
 
-ANSWER_KEYS = {"y", "n", "?", "+", "-"}
-
 
 class AkinatorApp(App):
     CSS_PATH = "app.tcss"
 
     BINDINGS = [
-        ("q", "quit", "Quit"),
+        Binding("y", "answer('y')", "Yes"),
+        Binding("n", "answer('n')", "No"),
+        Binding("question_mark", "answer('?')", "IDK"),
+        Binding("plus", "answer('+')", "Probably"),
+        Binding("minus", "answer('-')", "Prob. not"),
+        Binding("b", "go_back", "Back"),
+        Binding("q", "quit", "Quit"),
     ]
 
     def __init__(self, language: str = "en", debug: bool = False) -> None:
@@ -52,33 +56,24 @@ class AkinatorApp(App):
         self._do_start_game()
 
     # ------------------------------------------------------------------ #
-    # Key handling                                                         #
+    # Actions (bound to keys via BINDINGS, shown in Footer)               #
     # ------------------------------------------------------------------ #
 
-    def on_key(self, event: Key) -> None:
+    def action_answer(self, key: str) -> None:
         if self._loading or self._game_over:
-            event.stop()
             return
-
-        key = event.character or event.key
-
         if self._awaiting_win:
             if key == "y":
-                event.stop()
                 self._win_accept()
             elif key == "n":
-                event.stop()
                 self._win_reject()
-            # all other keys ignored while awaiting win response
             return
+        self._do_answer(key)
 
-        if key in ANSWER_KEYS:
-            event.stop()
-            self._do_answer(key)
-        elif key == "b":
-            event.stop()
-            self._do_back()
-        # q is handled by the BINDINGS action
+    def action_go_back(self) -> None:
+        if self._loading or self._game_over or self._awaiting_win:
+            return
+        self._do_back()
 
     # ------------------------------------------------------------------ #
     # Engine workers                                                       #
