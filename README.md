@@ -7,18 +7,24 @@ A monorepo for an Akinator CLI experience.
 The project is built in phases, each adding a layer while keeping the previous one intact as reference.
 
 **PoC** - single file, no separation of concerns:
-```
-poc/main.py  (everything: UI, game logic, HTTP)
+
+```mermaid
+graph LR
+    poc["poc/main.py<br/>(UI + game logic + HTTP)"]
 ```
 
 **Phase 1** - TUI talks directly to the engine via Python import:
-```
-tui/  ──import──►  engine/
+
+```mermaid
+graph LR
+    tui["tui/"] --import--> engine["engine/"]
 ```
 
 **Phase 2** - TUI talks to a server, server owns session state and talks to the engine:
-```
-tui/  ──http──►  server/  ──import──►  engine/
+
+```mermaid
+graph LR
+    tui["tui/"] --http--> server["server/"] --import--> engine["engine/"]
 ```
 
 The engine only ever wraps the akinator library - it has no awareness of who is calling it.
