@@ -10,6 +10,7 @@ from .exceptions import (
     InvalidAnswerError,
     InvalidLanguageError,
     NetworkError,
+    SessionTimeoutError,
     StartupError,
 )
 
@@ -49,7 +50,8 @@ class AkinatorEngine:
 
     def _snapshot(self) -> GameState:
         aki = self._aki
-        assert aki is not None
+        if aki is None:
+            raise RuntimeError("engine not started")
         return GameState(
             question=aki.question,
             step=aki.step,
@@ -74,41 +76,53 @@ class AkinatorEngine:
 
     def answer(self, key: str) -> GameState:
         aki = self._aki
-        assert aki is not None
+        if aki is None:
+            raise RuntimeError("engine not started")
         answer_str = ANSWER_ALIASES.get(key, key)
         try:
             aki.answer(answer_str)
         except _aki_exc.InvalidChoiceError as e:
             raise InvalidAnswerError(str(e)) from e
+        except _aki_exc.TimeoutError as e:
+            raise SessionTimeoutError(str(e)) from e
         except Exception as e:
             raise NetworkError(str(e)) from e
         return self._snapshot()
 
     def back(self) -> GameState:
         aki = self._aki
-        assert aki is not None
+        if aki is None:
+            raise RuntimeError("engine not started")
         try:
             aki.back()
         except _aki_exc.CantGoBackAnyFurther as e:
             raise CantGoBackError(str(e)) from e
+        except _aki_exc.TimeoutError as e:
+            raise SessionTimeoutError(str(e)) from e
         except Exception as e:
             raise NetworkError(str(e)) from e
         return self._snapshot()
 
     def choose(self) -> GameState:
         aki = self._aki
-        assert aki is not None
+        if aki is None:
+            raise RuntimeError("engine not started")
         try:
             aki.choose()
+        except _aki_exc.TimeoutError as e:
+            raise SessionTimeoutError(str(e)) from e
         except Exception as e:
             raise NetworkError(str(e)) from e
         return self._snapshot()
 
     def exclude(self) -> GameState:
         aki = self._aki
-        assert aki is not None
+        if aki is None:
+            raise RuntimeError("engine not started")
         try:
             aki.exclude()
+        except _aki_exc.TimeoutError as e:
+            raise SessionTimeoutError(str(e)) from e
         except Exception as e:
             raise NetworkError(str(e)) from e
         return self._snapshot()

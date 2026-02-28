@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from rich.markup import escape
 from textual.app import ComposeResult
 from textual.widgets import ListView, ListItem, Label, Static
 
@@ -13,11 +14,11 @@ class QuestionHistory(ListView):
             "+": "Probably", "-": "Probably not", "b": "Back",
         }
         label = key_labels.get(key, key)
-        self.append(ListItem(Label(f"[dim]{step}.[/dim] {question}  [dim]→ {label}[/dim]")))
+        self.append(ListItem(Label(f"[dim]{step}.[/dim] {escape(question)}  [dim]→ {escape(label)}[/dim]")))
         self.scroll_end(animate=False)
 
     def append_win(self, name: str, outcome: str) -> None:
-        self.append(ListItem(Label(f"[bold]{name}[/bold]  [dim]→ {outcome}[/dim]")))
+        self.append(ListItem(Label(f"[bold]{escape(name)}[/bold]  [dim]→ {escape(outcome)}[/dim]")))
         self.scroll_end(animate=False)
 
 
@@ -25,15 +26,15 @@ class CurrentQuestion(Static):
     """Displays the current question or a loading indicator."""
 
     def show_question(self, step: int, question: str) -> None:
-        self.update(f"[dim]{step + 1}.[/dim] {question}")
+        self.update(f"[dim]{step + 1}.[/dim] {escape(question)}")
 
     def show_loading(self) -> None:
         self.update("[dim]...[/dim]")
 
     def show_win_prompt(self, name: str, desc: str) -> None:
         self.update(
-            f"[bold]{name}[/bold]\n"
-            f"[dim]{desc}[/dim]\n\n"
+            f"[bold]{escape(name)}[/bold]\n"
+            f"[dim]{escape(desc)}[/dim]\n\n"
             "[dim]Is that right?[/dim]  [bold]y[/bold]es / [bold]n[/bold]o"
         )
 
@@ -47,8 +48,8 @@ class WinProposal(Static):
     def show(self, name: str, desc: str) -> None:
         self.display = True
         self.update(
-            f"[bold]{name}[/bold]\n"
-            f"[dim]{desc}[/dim]"
+            f"[bold]{escape(name)}[/bold]\n"
+            f"[dim]{escape(desc)}[/dim]"
         )
 
     def hide(self) -> None:

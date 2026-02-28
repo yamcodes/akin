@@ -23,7 +23,7 @@ class AkinatorApp(App):
 
     ENABLE_COMMAND_PALETTE = False
 
-    BINDINGS = [
+    BINDINGS = (
         Binding("y", "answer('y')", "Yes"),
         Binding("n", "answer('n')", "No"),
         Binding("question_mark", "answer('?')", "IDK"),
@@ -31,7 +31,7 @@ class AkinatorApp(App):
         Binding("minus", "answer('-')", "Prob. not"),
         Binding("b", "go_back", "Back"),
         Binding("q", "quit", "Quit"),
-    ]
+    )
 
     def __init__(self, language: str = "en", debug: bool = False) -> None:
         super().__init__()
@@ -195,8 +195,10 @@ class AkinatorApp(App):
             self._game_over = True
         elif isinstance(exc, (NetworkError, StartupError)):
             status.flash(f"Error: {exc}")
+            current.show_question(self._cur_step, self._cur_question)
         else:
             status.flash(f"Unexpected error: {exc}")
+            current.show_question(self._cur_step, self._cur_question)
 
     # ------------------------------------------------------------------ #
     # Helpers                                                              #
