@@ -8,6 +8,8 @@ The project is built in phases, each adding a layer while keeping the previous o
 
 **PoC** – single file, no separation of concerns ([`poc` tag](https://github.com/yamcodes/akin/tree/poc)):
 
+![PoC demo](assets/poc.png)
+
 ```mermaid
 graph LR
     poc["main.py<br/>(UI + game logic)"] --import--> lib["akinator lib"]
