@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from textual.app import App, ComposeResult
 from textual.binding import Binding
-from textual.widgets import Header, Footer
+from textual.widgets import Footer
 from textual.worker import Worker, WorkerState
 
 from engine import (
@@ -20,6 +20,8 @@ from tui.widgets import CurrentQuestion, QuestionHistory, StatusBar, WinProposal
 
 class AkinatorApp(App):
     CSS_PATH = "app.tcss"
+
+    ENABLE_COMMAND_PALETTE = False
 
     BINDINGS = [
         Binding("y", "answer('y')", "Yes"),
@@ -45,7 +47,6 @@ class AkinatorApp(App):
         self._cur_name: str = ""
 
     def compose(self) -> ComposeResult:
-        yield Header()
         yield QuestionHistory(id="history")
         yield CurrentQuestion("Starting...", id="current")
         yield WinProposal(id="win_proposal")
