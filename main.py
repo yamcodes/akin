@@ -9,16 +9,15 @@ import readchar
 from akinator.client import Akinator
 from akinator.exceptions import CantGoBackAnyFurther, InvalidChoiceError, InvalidLanguageError
 
-USAGE = "use: akinator [language (en|es|pt|...)]"
-
 HELP = """\
 Akinator CLI — guess a character by answering yes/no questions.
 
 Usage:
-  akinator [language]
+  akinator [language] [--debug]
 
 Arguments:
   language  Two-letter language code (default: en)
+  --debug   Show progression and confidence after each answer
 
 Answers during the game:
   y   Yes
@@ -30,7 +29,8 @@ Answers during the game:
 
 Examples:
   akinator
-  akinator es\
+  akinator es
+  akinator en --debug\
 """
 
 ANSWER_ALIASES = {
@@ -50,7 +50,7 @@ def read_key(prompt):
     return key
 
 
-def interactive(language="en"):
+def interactive(language="en", debug=False):
     print("Think about a real or fictional character. I will try to guess who it is.\n")
     print("Answer: [y] Yes  [n] No  [?] Don't know  [+] Probably  [-] Probably not  [b] Back\n")
 
@@ -88,6 +88,8 @@ def interactive(language="en"):
             answer_str = ANSWER_ALIASES.get(raw, raw)
             try:
                 aki.answer(answer_str)
+                if debug:
+                    print(f"  [debug] step={aki.step}  progression={aki.progression:.1f}%")
             except InvalidChoiceError:
                 print("Invalid answer. Use: y, n, ?, +, -, b")
             except Exception as e:
@@ -104,7 +106,8 @@ if __name__ == "__main__":
         print(HELP)
         sys.exit(0)
 
+    debug_mode = "--debug" in sys.argv
     argv = [a for a in sys.argv[1:] if a != "--debug"]
     lang = argv[0] if argv else "en"
 
-    interactive(lang)
+    interactive(lang, debug=debug_mode)
