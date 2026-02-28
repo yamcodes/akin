@@ -66,7 +66,7 @@ class StatusBar(Static):
     def flash(self, message: str, duration: float = 3.0) -> None:
         if self._timer is not None:
             self._timer.stop()
-        self.update(message)
+        self.update(escape(message))
         self._timer = self.set_timer(duration, self._clear)
 
     def _clear(self) -> None:
