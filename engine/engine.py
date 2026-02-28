@@ -25,6 +25,15 @@ class GameState:
     description_proposition: str | None
 
 
+LANGUAGE_MAP = {
+    "en": "english", "ar": "arabic",  "zh": "chinese",
+    "de": "german",  "es": "spanish", "fr": "french",
+    "he": "hebrew",  "it": "italian", "ja": "japanese",
+    "ko": "korean",  "nl": "dutch",   "pl": "polish",
+    "pt": "portuguese", "ru": "russian", "tr": "turkish",
+    "id": "indonesian",
+}
+
 ANSWER_ALIASES = {
     "y": "yes",
     "n": "no",
@@ -53,6 +62,7 @@ class AkinatorEngine:
 
     def start_game(self, language: str = "en") -> GameState:
         aki = Akinator()
+        language = LANGUAGE_MAP.get(language.lower(), language.lower())
         try:
             aki.start_game(language=language)
         except _aki_exc.InvalidLanguageError as e:

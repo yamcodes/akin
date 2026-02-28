@@ -181,7 +181,7 @@ class AkinatorApp(App):
 
         if isinstance(exc, InvalidLanguageError):
             status.flash(f"Invalid language '{self._language}', retrying with English...")
-            self._language = "en"
+            self._language = "english"
             self._do_start_game()
         elif isinstance(exc, CantGoBackError):
             status.flash("Can't go back any further")
