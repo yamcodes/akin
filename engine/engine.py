@@ -4,6 +4,7 @@ from dataclasses import dataclass
 
 from akinator.client import Akinator
 from akinator import exceptions as _aki_exc
+from curl_cffi import requests as _curl_requests
 
 from exceptions import (
     CantGoBackError,
@@ -63,7 +64,7 @@ class AkinatorEngine:
         )
 
     def start_game(self, language: str = "en") -> GameState:
-        aki = Akinator()
+        aki = Akinator(session=_curl_requests.Session(impersonate="chrome120"))
         language = LANGUAGE_MAP.get(language.lower(), language.lower())
         try:
             aki.start_game(language=language)
