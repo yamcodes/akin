@@ -30,7 +30,9 @@ graph LR
 
 ### Phase 2: HTTP communication
 
-Engine gains an HTTP interface, TUI talks to it over HTTP:
+Engine gains an HTTP interface, TUI talks to it over HTTP.
+Engine and TUI are independent `uv` projects (separate `pyproject.toml` / `uv.lock`).
+Engine ships as a Docker image deployable to Railway; TUI distributes via Homebrew.
 
 ```mermaid
 graph LR

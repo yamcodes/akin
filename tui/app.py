@@ -6,7 +6,7 @@ from textual.binding import Binding
 from textual.widgets import Footer
 from textual.worker import Worker, WorkerState
 
-from engine import (
+from client import (
     EngineClient,
     GameState,
     CantGoBackError,
@@ -16,7 +16,7 @@ from engine import (
     SessionTimeoutError,
     StartupError,
 )
-from tui.widgets import CurrentQuestion, QuestionHistory, StatusBar, WinProposal
+from widgets import CurrentQuestion, QuestionHistory, StatusBar, WinProposal
 
 
 class AkinatorApp(App):

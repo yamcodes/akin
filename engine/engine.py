@@ -5,7 +5,7 @@ from dataclasses import dataclass
 from akinator.client import Akinator
 from akinator import exceptions as _aki_exc
 
-from .exceptions import (
+from exceptions import (
     CantGoBackError,
     InvalidAnswerError,
     InvalidLanguageError,

@@ -1,17 +1,41 @@
 from __future__ import annotations
 
+from dataclasses import dataclass
+
 import httpx
 
-from .engine import GameState
-from .exceptions import (
-    CantGoBackError,
-    EngineError,
-    InvalidAnswerError,
-    InvalidLanguageError,
-    NetworkError,
-    SessionTimeoutError,
-    StartupError,
-)
+
+# --------------------------------------------------------------------------- #
+# Exceptions                                                                   #
+# --------------------------------------------------------------------------- #
+
+class EngineError(Exception): ...
+class StartupError(EngineError): ...
+class InvalidLanguageError(EngineError): ...
+class InvalidAnswerError(EngineError): ...
+class CantGoBackError(EngineError): ...
+class SessionTimeoutError(EngineError): ...
+class NetworkError(EngineError): ...
+
+
+# --------------------------------------------------------------------------- #
+# GameState                                                                    #
+# --------------------------------------------------------------------------- #
+
+@dataclass(frozen=True)
+class GameState:
+    question: str
+    step: int
+    progression: float
+    win: bool
+    finished: bool
+    name_proposition: str | None
+    description_proposition: str | None
+
+
+# --------------------------------------------------------------------------- #
+# HTTP client                                                                   #
+# --------------------------------------------------------------------------- #
 
 _ERROR_MAP: dict[str, type[EngineError]] = {
     "InvalidLanguageError": InvalidLanguageError,

@@ -6,8 +6,8 @@ import uvicorn
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 
-from .engine import AkinatorEngine, GameState
-from .exceptions import (
+from engine import AkinatorEngine, GameState
+from exceptions import (
     CantGoBackError,
     EngineError,
     InvalidAnswerError,
@@ -157,5 +157,9 @@ def exclude(session_id: str) -> StateResponse:
     return StateResponse(state=GameStateOut.from_state(state))
 
 
-if __name__ == "__main__":
+def start() -> None:
     uvicorn.run(app, host="0.0.0.0", port=8000)
+
+
+if __name__ == "__main__":
+    start()
