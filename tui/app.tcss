@@ -1,0 +1,29 @@
+Screen {
+    layout: vertical;
+}
+
+QuestionHistory {
+    height: 1fr;
+    border: round $surface;
+}
+
+CurrentQuestion {
+    height: auto;
+    min-height: 3;
+    border: round $accent;
+    padding: 0 1;
+}
+
+WinProposal {
+    display: none;
+    height: auto;
+    border: round $success;
+    padding: 0 1;
+    color: $success;
+}
+
+StatusBar {
+    height: 1;
+    color: $warning;
+    padding: 0 1;
+}
