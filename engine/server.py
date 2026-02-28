@@ -1,8 +1,11 @@
 from __future__ import annotations
 
+import logging
 import uuid
 
 import uvicorn
+
+logger = logging.getLogger(__name__)
 from exceptions import (
     CantGoBackError,
     EngineError,
@@ -81,6 +84,7 @@ _EXC_TO_STATUS: dict[type[EngineError], int] = {
 
 def _engine_exc_to_http(exc: EngineError) -> HTTPException:
     status = _EXC_TO_STATUS.get(type(exc), 500)
+    logger.exception("Engine error (%s)", type(exc).__name__)
     return HTTPException(
         status_code=status,
         detail={"error": type(exc).__name__, "message": str(exc)},

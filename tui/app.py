@@ -105,7 +105,7 @@ class AkinatorApp(App):
         history = self.query_one("#history", QuestionHistory)
         history.append_win(self._cur_name, "Nope, keep going...")
         self._set_loading(True)
-        self.run_worker(self._engine.exclude, thread=True, name="engine")
+        self.run_worker(self._engine.exclude, thread=True, name="engine", exit_on_error=False)
 
     # ------------------------------------------------------------------ #
     # Worker result / error                                               #
