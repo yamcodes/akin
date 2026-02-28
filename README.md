@@ -7,20 +7,21 @@ Bringing the Akinator experience to the terminal — and eventually to the brows
 ```bash
 make setup    # install deps for both services (one-time)
 
-# Terminal 1 — start the engine
-make engine
-
-# Terminal 2 — start the TUI
-make tui                      # English (default)
-make tui ARGS="es"            # Spanish
-make tui ARGS="en --debug"    # show step + progression %
+make start                    # full stack: engine (Docker) + TUI
+make start ARGS="es"          # same, Spanish
+make start ARGS="en --debug"  # same, with debug info
 ```
 
-Or with Docker:
+Or run services separately:
 
 ```bash
-make docker        # starts the engine on :8000
-make tui           # TUI runs natively, points to localhost:8000
+# Dockerless (two terminals)
+make engine     # Terminal 1 — engine on :8000
+make tui        # Terminal 2 — TUI
+
+# Docker engine + native TUI (two terminals)
+make docker     # Terminal 1 — engine via Docker Compose
+make tui        # Terminal 2 — TUI
 ```
 
 Run `make` (no target) to see all available targets.
