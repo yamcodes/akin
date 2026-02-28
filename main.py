@@ -6,6 +6,7 @@
 import sys
 
 import akinator
+from akinator import Answer, Language
 
 USAGE = "use: akinator <name> <age> <gender> [language (en|es|pt)]"
 
@@ -34,13 +35,11 @@ Examples:
   akinator Alice 25 F es\
 """
 
-ANSWER_MAP = {
-    "y": "yes",
-    "n": "no",
+# Map shorthand inputs to strings accepted by Answer.from_str()
+ANSWER_ALIASES = {
     "?": "idk",
     "+": "probably",
     "-": "probably not",
-    "b": "back",
 }
 
 
@@ -48,27 +47,44 @@ def interactive(name, age, gender, language="en"):
     print("Think about a real or fictional character. I will try to guess who it is.\n")
     print("Answer: [y]es, [n]o, [?] don't know, [+] probably, [-] not really, [b]ack\n")
 
-    aki = akinator.Akinator()
+    try:
+        lang = Language.from_str(language)
+    except akinator.InvalidLanguage:
+        print("Invalid language '%s'. Falling back to English." % language)
+        lang = Language.English
+
+    aki = akinator.Akinator(language=lang)
 
     try:
-        aki.start_game(language=language)
+        aki.start_game()
     except Exception as e:
         print("Error starting game: %s" % e)
         return
 
-    while not aki.finished:
-        answer = input("%s " % aki)
-        mapped = ANSWER_MAP.get(answer, answer)
+    while True:
+        if aki.progression >= 80:
+            guess = aki.win()
+            print("\nI think it's: %s" % guess.name)
+            print(guess.description)
+            break
+
+        raw = input("%s " % aki.question)
+
+        if raw == "b":
+            try:
+                aki.back()
+            except akinator.CantGoBackAnyFurther:
+                print("Can't go back any further.")
+            continue
+
+        answer_str = ANSWER_ALIASES.get(raw, raw)
         try:
-            aki.answer(mapped)
-        except akinator.CantGoBackAnyFurther:
-            print("Can't go back any further.")
+            aki.answer(Answer.from_str(answer_str))
+        except akinator.InvalidAnswer:
+            print("Invalid answer. Use: y, n, ?, +, -, b")
         except Exception as e:
             print("Error: %s" % e)
             return
-
-    print("\nI think it's: %s" % aki.first_guess["name"])
-    print(aki.first_guess.get("description", ""))
 
 
 if __name__ == "__main__":
