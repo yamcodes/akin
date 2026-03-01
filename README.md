@@ -4,15 +4,15 @@
 [![Scalar](https://img.shields.io/badge/Scalar-080808?logo=scalar&logoColor=e7e7e7)](https://scalar.com/)
 [![Star](https://custom-icon-badges.demolab.com/github/stars/yamcodes/akin?logo=star&logoColor=373737&label=Star)](https://github.com/yamcodes/akin/stargazers/)
 
-Bringing the Akinator experience to the terminal — and eventually to the browser.
+Bringing the Akinator experience to the terminal – and eventually to the browser.
 
 ## Prerequisites
 
-| Tool | Required for |
-|------|-------------|
-| [uv](https://docs.astral.sh/uv/) | all targets |
+| Tool                                                      | Required for                |
+|-----------------------------------------------------------|-----------------------------|
+| [uv](https://docs.astral.sh/uv/)                          | all targets                 |
 | [Docker](https://docs.docker.com/get-started/get-docker/) | `make docker`, `make start` |
-| [curl](https://curl.se/) | `make start` |
+| [curl](https://curl.se/)                                  | `make start`                |
 
 ## Quick start
 
@@ -28,12 +28,12 @@ Or run services separately:
 
 ```bash
 # Dockerless (two terminals)
-make engine     # Terminal 1 — engine on :8000
-make tui        # Terminal 2 — TUI
+make engine     # Terminal 1 - engine on :8000
+make tui        # Terminal 2 - TUI
 
 # Docker engine + native TUI (two terminals)
-make docker     # Terminal 1 — engine via Docker Compose
-make tui        # Terminal 2 — TUI
+make docker     # Terminal 1 - engine via Docker Compose
+make tui        # Terminal 2 - TUI
 ```
 
 Run `make` (no target) to see all available targets.
@@ -46,7 +46,7 @@ The project is built in phases, each adding a layer while keeping the previous o
 
 ### Phase 0: Proof of concept
 
-[Single `poc/main.py`](poc/main.py) — UI and game logic in one file.
+[Single `poc/main.py`](poc/main.py) - UI and game logic in one file.
 
 ```mermaid
 graph LR
@@ -93,13 +93,13 @@ graph LR
 
 ## Repository layout
 
-| Path | Description |
-|------|-------------|
-| `engine/` | Game logic + FastAPI HTTP server ([README](engine/README.md)) |
-| `tui/` | Textual TUI client ([README](tui/README.md)) |
-| `poc/` | Original single-file proof of concept |
-| `web/` | Spring Boot hypermedia server (Phase 4, not yet implemented) |
-| `docker-compose.yml` | Starts the engine service |
+| Path                 | Description                                                   |
+|----------------------|---------------------------------------------------------------|
+| `engine/`            | Game logic + FastAPI HTTP server ([README](engine/README.md)) |
+| `tui/`               | Textual TUI client ([README](tui/README.md))                  |
+| `poc/`               | Original single-file proof of concept                         |
+| `web/`               | Spring Boot hypermedia server (Phase 4, not yet implemented)  |
+| `docker-compose.yml` | Starts the engine service                                     |
 
 ## Acknowledgements
 

@@ -25,7 +25,7 @@ Port `8000` is exposed and forwarded to the host.
 
 ## Interactive docs
 
-Once the engine server is running, open **http://localhost:8000** — it redirects to the [Scalar](https://scalar.com) API reference at `/scalar`.
+Once the engine server is running, open **http://localhost:8000** – it redirects to the [Scalar](https://scalar.com) API reference at `/scalar`.
 
 ## API
 
@@ -69,15 +69,15 @@ POST /games/{session_id}/answer
 { "key": "y" }
 ```
 
-| Key | Meaning |
-|-----|---------|
-| `y` | Yes |
-| `n` | No |
+| Key | Meaning      |
+|-----|--------------|
+| `y` | Yes          |
+| `n` | No           |
 | `?` | I don't know |
-| `+` | Probably |
+| `+` | Probably     |
 | `-` | Probably not |
 
-**Response** `200` — updated `state`
+**Response** `200` - updated `state`
 
 ---
 
@@ -98,7 +98,7 @@ Returns `409` if already at the first question.
 POST /games/{session_id}/choose
 ```
 
-No body. Finalises the game as a win (`finished=true, win=true`).
+No body. Finalizes the game as a win (`finished=true, win=true`).
 
 ---
 
@@ -130,30 +130,30 @@ Every response wraps the current game state:
 }
 ```
 
-| Field | Type | Description |
-|-------|------|-------------|
-| `question` | string | Current question text |
-| `step` | int | Zero-based question index |
-| `progression` | float | Akinator's confidence 0–100 |
-| `win` | bool | Akinator has a guess |
-| `finished` | bool | Game is over |
-| `name_proposition` | string \| null | Guessed character name |
+| Field                     | Type           | Description                    |
+|---------------------------|----------------|--------------------------------|
+| `question`                | string         | Current question text          |
+| `step`                    | int            | Zero-based question index      |
+| `progression`             | float          | Akinator's confidence 0–100    |
+| `win`                     | bool           | Akinator has a guess           |
+| `finished`                | bool           | Game is over                   |
+| `name_proposition`        | string \| null | Guessed character name         |
 | `description_proposition` | string \| null | Short description of the guess |
 
 **State transitions**
 
-- `win=true, finished=false` — Akinator is guessing; call `/choose` or `/exclude`
-- `win=true, finished=true` — Akinator won; game over
-- `win=false, finished=true` — Akinator gave up; game over
+- `win=true, finished=false` - Akinator is guessing; call `/choose` or `/exclude`
+- `win=true, finished=true` - Akinator won; game over
+- `win=false, finished=true` - Akinator gave up; game over
 
 ## Error codes
 
-| Status | Error type | Cause |
-|--------|------------|-------|
-| 400 | `InvalidAnswerError` | Unknown answer key |
-| 404 | `SessionNotFound` | Bad or expired session ID |
-| 408 | `SessionTimeoutError` | Akinator session timed out |
-| 409 | `CantGoBackError` | Already at question 0 |
-| 422 | `InvalidLanguageError` | Unsupported language code |
-| 502 | `NetworkError` | Upstream Akinator API error |
-| 503 | `StartupError` | Failed to start a new game |
+| Status | Error type             | Cause                       |
+|--------|------------------------|-----------------------------|
+| 400    | `InvalidAnswerError`   | Unknown answer key          |
+| 404    | `SessionNotFound`      | Bad or expired session ID   |
+| 408    | `SessionTimeoutError`  | Akinator session timed out  |
+| 409    | `CantGoBackError`      | Already at question 0       |
+| 422    | `InvalidLanguageError` | Unsupported language code   |
+| 502    | `NetworkError`         | Upstream Akinator API error |
+| 503    | `StartupError`         | Failed to start a new game  |

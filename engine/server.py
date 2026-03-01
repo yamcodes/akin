@@ -75,7 +75,7 @@ class AnswerRequest(BaseModel):
 
 
 class StartGameResponse(BaseModel):
-    session_id: str = Field(description="Unique session ID — pass this in all subsequent requests")
+    session_id: str = Field(description="Unique session ID - pass this in all later requests")
     state: GameStateOut
 
 
@@ -146,7 +146,7 @@ _R_ENGINE  = {408: _err("Akinator session timed out"), 502: _err("Upstream Akina
 
 @app.post("/games", response_model=StartGameResponse, status_code=201, responses={422: _err("Unsupported language code"), 503: _err("Failed to start a new game")})
 def start_game(body: StartGameRequest) -> StartGameResponse:
-    """Start a new game session. Returns a `session_id` to use in all subsequent requests."""
+    """Start a new game session. Returns a `session_id` to use in all later requests."""
     engine = AkinatorEngine()
     try:
         state = engine.start_game(body.language)
@@ -181,7 +181,7 @@ def back(session_id: str) -> StateResponse:
 
 @app.post("/games/{session_id}/choose", response_model=StateResponse, responses={**_R_SESSION, **_R_ENGINE})
 def choose(session_id: str) -> StateResponse:
-    """Accept Akinator's guess — the game ends as a win."""
+    """Accept Akinator's guess - the game ends as a win."""
     engine = _get_session(session_id)
     try:
         state = engine.choose()
@@ -192,7 +192,7 @@ def choose(session_id: str) -> StateResponse:
 
 @app.post("/games/{session_id}/exclude", response_model=StateResponse, responses={**_R_SESSION, **_R_ENGINE})
 def exclude(session_id: str) -> StateResponse:
-    """Reject Akinator's guess — the game continues with more questions."""
+    """Reject Akinator's guess - the game continues with more questions."""
     engine = _get_session(session_id)
     try:
         state = engine.exclude()

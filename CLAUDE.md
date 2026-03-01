@@ -47,7 +47,7 @@ Managed via **uv** (per-service):
 (cd tui && uv sync)      # installs tui deps + generates tui/uv.lock
 ```
 
-Both `engine/uv.lock` and `tui/uv.lock` are committed for reproducible installs.
+Both `engine/uv.lock` and `tui/uv.lock` are committed for reproducible installations.
 
 ## Architecture
 
@@ -60,7 +60,7 @@ engine/          # Game logic + HTTP server (standalone uv project)
   Dockerfile     # Python slim + uv, exposes :8000
 
 tui/             # Textual TUI frontend (standalone uv project)
-  app.py         # AkinatorApp (App) — worker pattern, state machine
+  app.py         # AkinatorApp (App) - worker pattern, state machine
   widgets.py     # QuestionHistory, CurrentQuestion, WinProposal, StatusBar
   client.py      # GameState + exceptions + EngineClient (HTTP client)
   app.tcss       # Textual CSS
@@ -75,7 +75,7 @@ poc/
 
 **`AkinatorEngine`** wraps the sync `akinator.client.Akinator`. All methods return a frozen `GameState` dataclass. Workers run engine calls off the main thread.
 
-**`EngineClient`** (in `tui/client.py`) exposes the same interface as `AkinatorEngine` but communicates over HTTP. It manages a `session_id` obtained from `POST /games` and passes it in all subsequent requests.
+**`EngineClient`** (in `tui/client.py`) exposes the same interface as `AkinatorEngine` but communicates over HTTP. It manages a `session_id` obtained from `POST /games` and passes it in all later requests.
 
 **Key bindings**: `y n ? + -` (answers), `b` (back), `q` (quit).
 
