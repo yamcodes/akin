@@ -6,17 +6,18 @@ from textual.binding import Binding
 from textual.widgets import Footer
 from textual.worker import Worker, WorkerState
 
-from engine import (
-    AkinatorEngine,
+from client import (
+    EngineClient,
     GameState,
     CantGoBackError,
     InvalidAnswerError,
     InvalidLanguageError,
     NetworkError,
+    SessionNotFound,
     SessionTimeoutError,
     StartupError,
 )
-from tui.widgets import CurrentQuestion, QuestionHistory, StatusBar, WinProposal
+from widgets import CurrentQuestion, QuestionHistory, StatusBar, WinProposal
 
 
 class AkinatorApp(App):
@@ -34,11 +35,12 @@ class AkinatorApp(App):
         Binding("q", "quit", "Quit"),
     )
 
-    def __init__(self, language: str = "en", debug: bool = False) -> None:
+
+    def __init__(self, language: str = "en", debug: bool = False, engine_url: str = "http://localhost:8000") -> None:
         super().__init__()
         self._language = language
         self._debug = debug
-        self._engine = AkinatorEngine()
+        self._engine = EngineClient(engine_url)
         self._loading = False
         self._game_over = False
         self._awaiting_win = False
@@ -83,29 +85,29 @@ class AkinatorApp(App):
 
     def _do_start_game(self) -> None:
         self._set_loading(True)
-        self.run_worker(lambda: self._engine.start_game(self._language), thread=True, name="engine")
+        self.run_worker(lambda: self._engine.start_game(self._language), thread=True, name="engine", exit_on_error=False)
 
     def _do_answer(self, key: str) -> None:
         history = self.query_one("#history", QuestionHistory)
         history.append_qa(self._cur_step + 1, self._cur_question, key)
         self._set_loading(True)
-        self.run_worker(lambda: self._engine.answer(key), thread=True, name="engine")
+        self.run_worker(lambda: self._engine.answer(key), thread=True, name="engine", exit_on_error=False)
 
     def _do_back(self) -> None:
         self._set_loading(True)
-        self.run_worker(self._engine.back, thread=True, name="engine")
+        self.run_worker(self._engine.back, thread=True, name="engine", exit_on_error=False)
 
     def _win_accept(self) -> None:
         history = self.query_one("#history", QuestionHistory)
         history.append_win(self._cur_name, "Correct!")
         self._set_loading(True)
-        self.run_worker(self._engine.choose, thread=True, name="engine")
+        self.run_worker(self._engine.choose, thread=True, name="engine", exit_on_error=False)
 
     def _win_reject(self) -> None:
         history = self.query_one("#history", QuestionHistory)
         history.append_win(self._cur_name, "Nope, keep going...")
         self._set_loading(True)
-        self.run_worker(self._engine.exclude, thread=True, name="engine")
+        self.run_worker(self._engine.exclude, thread=True, name="engine", exit_on_error=False)
 
     # ------------------------------------------------------------------ #
     # Worker result / error                                               #
@@ -191,6 +193,10 @@ class AkinatorApp(App):
         elif isinstance(exc, InvalidAnswerError):
             status.flash("Invalid answer")
             current.show_question(self._cur_step, self._cur_question)
+        elif isinstance(exc, SessionNotFound):
+            status.flash("Session not found. Please restart.")
+            self._game_over = True
+            current.show_result("[dim]Session not found. Please restart.[/dim]")
         elif isinstance(exc, SessionTimeoutError):
             status.flash("Session timed out. Please restart.")
             self._game_over = True
@@ -205,6 +211,9 @@ class AkinatorApp(App):
     # ------------------------------------------------------------------ #
     # Helpers                                                              #
     # ------------------------------------------------------------------ #
+
+    def on_unmount(self) -> None:
+        self._engine.close()
 
     def _set_loading(self, loading: bool) -> None:
         self._loading = loading

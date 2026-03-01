@@ -3,7 +3,7 @@
   <component name="Black">
     <option name="sdkName" value="Python 3.14 (akin)" />
   </component>
-  <component name="ProjectRootManager" version="2" project-jdk-name="Poetry (akin)" project-jdk-type="Python SDK" />
+  <component name="ProjectRootManager" version="2" />
   <component name="RuffConfiguration">
     <option name="enabled" value="true" />
     <option name="executableDiscoveryMode" value="PATH" />

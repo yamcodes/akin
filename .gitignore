@@ -90,3 +90,11 @@ fabric.properties
 !.idea/runConfigurations
 
 # End of https://www.toptal.com/developers/gitignore/api/pycharm+all
+
+# explicit ignore
+/.ignore
+
+# Python build artifacts
+*.egg-info/
+__pycache__/
+*.py[cod]
