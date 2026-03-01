@@ -9,7 +9,7 @@ WORKDIR /app
 
 COPY pyproject.toml uv.lock .
 RUN uv sync --no-dev --frozen
-j
+
 COPY . .
 RUN chown -R appuser:appgroup /app
 
