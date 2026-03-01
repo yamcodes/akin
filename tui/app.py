@@ -1,15 +1,9 @@
 from __future__ import annotations
 
-from rich.markup import escape
-from textual.app import App, ComposeResult
-from textual.binding import Binding
-from textual.widgets import Footer
-from textual.worker import Worker, WorkerState
-
 from client import (
+    CantGoBackError,
     EngineClient,
     GameState,
-    CantGoBackError,
     InvalidAnswerError,
     InvalidLanguageError,
     NetworkError,
@@ -17,6 +11,11 @@ from client import (
     SessionTimeoutError,
     StartupError,
 )
+from rich.markup import escape
+from textual.app import App, ComposeResult
+from textual.binding import Binding
+from textual.widgets import Footer
+from textual.worker import Worker, WorkerState
 from widgets import CurrentQuestion, QuestionHistory, StatusBar, WinProposal
 
 
@@ -44,7 +43,7 @@ class AkinatorApp(App):
         self._loading = False
         self._game_over = False
         self._awaiting_win = False
-        # Track current question/step for history recording on keypress
+        # Track the current question /step for history recording on keypress
         self._cur_question: str = ""
         self._cur_step: int = 0
         self._cur_name: str = ""
@@ -188,7 +187,7 @@ class AkinatorApp(App):
             self._do_start_game()
         elif isinstance(exc, CantGoBackError):
             status.flash("Can't go back any further")
-            # Re-display current question
+            # Re-display the current question
             current.show_question(self._cur_step, self._cur_question)
         elif isinstance(exc, InvalidAnswerError):
             status.flash("Invalid answer")

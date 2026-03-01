@@ -7,7 +7,7 @@ RUN addgroup --system --gid 1001 appgroup \
 
 WORKDIR /app
 
-COPY pyproject.toml uv.lock .
+COPY pyproject.toml uv.lock ./
 RUN uv sync --no-dev --frozen
 
 COPY . .

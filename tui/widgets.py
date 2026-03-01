@@ -1,8 +1,7 @@
 from __future__ import annotations
 
 from rich.markup import escape
-from textual.app import ComposeResult
-from textual.widgets import ListView, ListItem, Label, Static
+from textual.widgets import Label, ListItem, ListView, Static
 
 
 class QuestionHistory(ListView):
