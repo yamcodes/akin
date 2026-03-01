@@ -46,7 +46,7 @@ The project is built in phases, each adding a layer while keeping the previous o
 
 ### Phase 0: Proof of concept
 
-[Single `poc/main.py`](poc/main.py) - UI and game logic in one file.
+[Single `main.py` file](https://github.com/yamcodes/akin/blob/poc/main.py) - all UI and game logic in one file.
 
 ```mermaid
 graph LR
@@ -55,7 +55,7 @@ graph LR
 
 ### Phase 1: Engine–UI separation
 
-[`phase1`](https://github.com/yamcodes/akin/tree/phase1) - `engine/` and `tui/` as Python packages; TUI imports the engine directly.
+[`phase1`](https://github.com/yamcodes/akin/tree/phase1) - `engine/` and `tui/` as Python packages; TUI imports the engine directly. This phase exists mainly as a setup for phase 2.
 
 ```mermaid
 graph LR
