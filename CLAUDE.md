@@ -27,7 +27,7 @@ cd tui && uv run python main.py en --engine-url http://localhost:8000
 - `--debug`: shows progression % and step after each answer
 - `--engine-url`: engine server URL; defaults to `ENGINE_URL` env var, then `http://localhost:8000`
 
-The PoC (terminal, no TUI) is still available at `poc/main.py`.
+The PoC (terminal, no TUI) is still available at https://github.com/yamcodes/akin/blob/poc/main.py.
 
 ## Docker
 
