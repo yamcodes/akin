@@ -68,9 +68,6 @@ tui/             # Textual TUI frontend (standalone uv project)
   pyproject.toml # uv project: textual, httpx, readchar
 
 docker-compose.yml  # engine service; web/ joins in Phase 3
-
-poc/
-  main.py        # Original single-file PoC (readchar, no Textual)
 ```
 
 **`AkinatorEngine`** wraps the sync `akinator.client.Akinator`. All methods return a frozen `GameState` dataclass. Workers run engine calls off the main thread.

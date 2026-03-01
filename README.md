@@ -102,7 +102,6 @@ graph LR
 |----------------------|---------------------------------------------------------------|
 | `engine/`            | Game logic + FastAPI HTTP server ([README](engine/README.md)) |
 | `tui/`               | Textual TUI client ([README](tui/README.md))                  |
-| `poc/`               | Original single-file proof of concept                         |
 | `web/`               | Spring Boot hypermedia server (Phase 4, not yet implemented)  |
 | `docker-compose.yml` | Starts the engine service                                     |
 
