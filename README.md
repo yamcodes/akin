@@ -6,6 +6,14 @@
 
 Bringing the Akinator experience to the terminal — and eventually to the browser.
 
+## Prerequisites
+
+| Tool | Required for |
+|------|-------------|
+| [uv](https://docs.astral.sh/uv/) | all targets |
+| [Docker](https://docs.docker.com/get-started/get-docker/) | `make docker`, `make start` |
+| [curl](https://curl.se/) | `make start` |
+
 ## Quick start
 
 ```bash
