@@ -66,7 +66,7 @@ graph LR
     tui["tui/"] --import--> engine["engine/"]
 ```
 
-### Phase 2: HTTP communication ← current
+### Phase 2: HTTP ← current
 [`phase2`](https://github.com/yamcodes/akin/tree/phase2) - Engine and TUI are independent services (separate `uv` projects).
 They communicate over HTTP. Engine ships as a Docker image.
 
@@ -79,7 +79,7 @@ graph LR
     tui["tui/"] --HTTP--> engine["engine/ :8000"]
 ```
 
-### Phase 3: TUI distribution
+### Phase 3: Homebrew
 
 TUI is packaged as a proper Python package and distributed via Homebrew.
 Requires converting `tui/` from a flat-module layout to a real package (`akin_tui/`)
