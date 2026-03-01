@@ -55,9 +55,9 @@ graph LR
     poc["poc/main.py<br/>(UI + game logic)"] --> lib["akinator lib"]
 ```
 
-### Phase 1: Engine–UI separation
+### Phase 1: TUI
 
-[`phase1`](https://github.com/yamcodes/akin/tree/phase1) - `engine/` and `tui/` as Python packages; TUI imports the engine directly. This phase exists mainly as a setup for phase 2.
+[`phase1`](https://github.com/yamcodes/akin/tree/phase1) - `engine/` and `tui/` as Python packages; TUI imports the engine directly.
 
 ![Phase 1 screenshot](./assets/phase1.png)
 
