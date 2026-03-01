@@ -4,7 +4,9 @@
 [![Scalar](https://img.shields.io/badge/Scalar-080808?logo=scalar&logoColor=e7e7e7)](https://scalar.com/)
 [![Star](https://custom-icon-badges.demolab.com/github/stars/yamcodes/akin?logo=star&logoColor=373737&label=Star)](https://github.com/yamcodes/akin/stargazers/)
 
-Bringing the Akinator experience to the terminal – and eventually to the browser.
+Simplifying the Akinator experience. No ads, no busy UI.
+
+![Phase 1 screenshot](./assets/phase1.png)
 
 ## Prerequisites
 
