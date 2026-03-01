@@ -1,6 +1,9 @@
 # akin
 
 [![License](https://custom-icon-badges.demolab.com/github/license/yamcodes/akin?label=License&color=blue&logo=law&labelColor=0d1117)](https://github.com/yamcodes/akin/blob/main/LICENSE)
+[![Python](https://img.shields.io/badge/Python-3-3776AB?logo=python&logoColor=white)](https://python.org)
+[![uv](https://img.shields.io/badge/uv-261230?logo=uv&logoColor=white)](https://docs.astral.sh/uv/)
+[![Docker](https://img.shields.io/badge/Docker-2496ED?logo=docker&logoColor=white)](https://docker.com)
 [![Scalar](https://img.shields.io/badge/Scalar-080808?logo=scalar&logoColor=e7e7e7)](https://scalar.com/)
 [![Star](https://custom-icon-badges.demolab.com/github/stars/yamcodes/akin?logo=star&logoColor=373737&label=Star)](https://github.com/yamcodes/akin/stargazers/)
 
