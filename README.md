@@ -55,7 +55,7 @@ graph LR
 
 ### Phase 1: Engine–UI separation
 
-`engine/` and `tui/` as Python packages; TUI imports the engine directly.
+[`phase1`](https://github.com/yamcodes/akin/tree/phase1) - `engine/` and `tui/` as Python packages; TUI imports the engine directly.
 
 ```mermaid
 graph LR
@@ -63,8 +63,7 @@ graph LR
 ```
 
 ### Phase 2: HTTP communication ← current
-
-Engine and TUI are independent services (separate `uv` projects).
+[`phase2`](https://github.com/yamcodes/akin/tree/phase2) - Engine and TUI are independent services (separate `uv` projects).
 They communicate over HTTP. Engine ships as a Docker image.
 
 **Cloudflare note:** akinator.com is behind Cloudflare. The engine uses [`curl-cffi`](https://github.com/yifeikong/curl-cffi) to impersonate Chrome's TLS fingerprint, which passes bot detection reliably in any environment including Docker. The `akinator` library's default (`cloudscraper`) only solves JS challenges but leaves Python's TLS fingerprint exposed, causing 403 errors in containers.

@@ -11,7 +11,6 @@ from exceptions import (
     InvalidAnswerError,
     InvalidLanguageError,
     NetworkError,
-    SessionTimeoutError,
     StartupError,
 )
 
@@ -84,8 +83,6 @@ class AkinatorEngine:
             aki.answer(answer_str)
         except _aki_exc.InvalidChoiceError as e:
             raise InvalidAnswerError(str(e)) from e
-        except _aki_exc.TimeoutError as e:
-            raise SessionTimeoutError(str(e)) from e
         except Exception as e:
             raise NetworkError(str(e)) from e
         return self._snapshot()
@@ -98,8 +95,6 @@ class AkinatorEngine:
             aki.back()
         except _aki_exc.CantGoBackAnyFurther as e:
             raise CantGoBackError(str(e)) from e
-        except _aki_exc.TimeoutError as e:
-            raise SessionTimeoutError(str(e)) from e
         except Exception as e:
             raise NetworkError(str(e)) from e
         return self._snapshot()
@@ -110,8 +105,6 @@ class AkinatorEngine:
             raise RuntimeError("engine not started")
         try:
             aki.choose()
-        except _aki_exc.TimeoutError as e:
-            raise SessionTimeoutError(str(e)) from e
         except Exception as e:
             raise NetworkError(str(e)) from e
         return self._snapshot()
@@ -122,8 +115,6 @@ class AkinatorEngine:
             raise RuntimeError("engine not started")
         try:
             aki.exclude()
-        except _aki_exc.TimeoutError as e:
-            raise SessionTimeoutError(str(e)) from e
         except Exception as e:
             raise NetworkError(str(e)) from e
         return self._snapshot()
