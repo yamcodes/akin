@@ -14,7 +14,9 @@ def main() -> None:
         default=os.environ.get("ENGINE_URL", "http://localhost:8000"),
     )
     args = parser.parse_args()
-    AkinatorApp(language=args.language, debug=args.debug, engine_url=args.engine_url).run()
+    AkinatorApp(
+        language=args.language, debug=args.debug, engine_url=args.engine_url
+    ).run()
 
 
 if __name__ == "__main__":

@@ -34,8 +34,12 @@ class AkinatorApp(App):
         Binding("q", "quit", "Quit"),
     )
 
-
-    def __init__(self, language: str = "en", debug: bool = False, engine_url: str = "http://localhost:8000") -> None:
+    def __init__(
+        self,
+        language: str = "en",
+        debug: bool = False,
+        engine_url: str = "http://localhost:8000",
+    ) -> None:
         super().__init__()
         self._language = language
         self._debug = debug
@@ -84,29 +88,45 @@ class AkinatorApp(App):
 
     def _do_start_game(self) -> None:
         self._set_loading(True)
-        self.run_worker(lambda: self._engine.start_game(self._language), thread=True, name="engine", exit_on_error=False)
+        self.run_worker(
+            lambda: self._engine.start_game(self._language),
+            thread=True,
+            name="engine",
+            exit_on_error=False,
+        )
 
     def _do_answer(self, key: str) -> None:
         history = self.query_one("#history", QuestionHistory)
         history.append_qa(self._cur_step + 1, self._cur_question, key)
         self._set_loading(True)
-        self.run_worker(lambda: self._engine.answer(key), thread=True, name="engine", exit_on_error=False)
+        self.run_worker(
+            lambda: self._engine.answer(key),
+            thread=True,
+            name="engine",
+            exit_on_error=False,
+        )
 
     def _do_back(self) -> None:
         self._set_loading(True)
-        self.run_worker(self._engine.back, thread=True, name="engine", exit_on_error=False)
+        self.run_worker(
+            self._engine.back, thread=True, name="engine", exit_on_error=False
+        )
 
     def _win_accept(self) -> None:
         history = self.query_one("#history", QuestionHistory)
         history.append_win(self._cur_name, "Correct!")
         self._set_loading(True)
-        self.run_worker(self._engine.choose, thread=True, name="engine", exit_on_error=False)
+        self.run_worker(
+            self._engine.choose, thread=True, name="engine", exit_on_error=False
+        )
 
     def _win_reject(self) -> None:
         history = self.query_one("#history", QuestionHistory)
         history.append_win(self._cur_name, "Nope, keep going...")
         self._set_loading(True)
-        self.run_worker(self._engine.exclude, thread=True, name="engine", exit_on_error=False)
+        self.run_worker(
+            self._engine.exclude, thread=True, name="engine", exit_on_error=False
+        )
 
     # ------------------------------------------------------------------ #
     # Worker result / error                                               #
@@ -182,7 +202,9 @@ class AkinatorApp(App):
         current = self.query_one("#current", CurrentQuestion)
 
         if isinstance(exc, InvalidLanguageError):
-            status.flash(f"Invalid language '{self._language}', retrying with English...")
+            status.flash(
+                f"Invalid language '{self._language}', retrying with English..."
+            )
             self._language = "english"
             self._do_start_game()
         elif isinstance(exc, CantGoBackError):

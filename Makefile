@@ -1,4 +1,4 @@
-.PHONY: help setup setup-engine setup-tui engine tui build docker start
+.PHONY: help setup setup-engine setup-tui engine tui build docker start format
 
 help:
 	@echo "Usage: make <target>"
@@ -6,6 +6,7 @@ help:
 	@echo "  setup         Install deps for both engine and tui"
 	@echo "  setup-engine  Install engine deps"
 	@echo "  setup-tui     Install tui deps"
+	@echo "  format        Format code in both services"
 	@echo "  engine        Start the engine HTTP server (local)"
 	@echo "  tui           Start the TUI (pass ARGS='en --debug' for options)"
 	@echo "  build         Build Docker images"
@@ -19,6 +20,10 @@ setup-engine:
 
 setup-tui:
 	cd tui && uv sync
+
+format:
+	cd engine && uv run ruff format .
+	cd tui && uv run ruff format .
 
 engine:
 	cd engine && uv run python server.py

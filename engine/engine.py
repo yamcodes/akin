@@ -27,11 +27,21 @@ class GameState:
 
 
 LANGUAGE_MAP = {
-    "en": "english", "ar": "arabic",  "zh": "chinese",
-    "de": "german",  "es": "spanish", "fr": "french",
-    "he": "hebrew",  "it": "italian", "ja": "japanese",
-    "ko": "korean",  "nl": "dutch",   "pl": "polish",
-    "pt": "portuguese", "ru": "russian", "tr": "turkish",
+    "en": "english",
+    "ar": "arabic",
+    "zh": "chinese",
+    "de": "german",
+    "es": "spanish",
+    "fr": "french",
+    "he": "hebrew",
+    "it": "italian",
+    "ja": "japanese",
+    "ko": "korean",
+    "nl": "dutch",
+    "pl": "polish",
+    "pt": "portuguese",
+    "ru": "russian",
+    "tr": "turkish",
     "id": "indonesian",
 }
 

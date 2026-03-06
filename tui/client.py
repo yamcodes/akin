@@ -9,19 +9,35 @@ import httpx
 # Exceptions                                                                   #
 # --------------------------------------------------------------------------- #
 
+
 class EngineError(Exception): ...
+
+
 class StartupError(EngineError): ...
+
+
 class InvalidLanguageError(EngineError): ...
+
+
 class InvalidAnswerError(EngineError): ...
+
+
 class CantGoBackError(EngineError): ...
+
+
 class SessionTimeoutError(EngineError): ...
+
+
 class SessionNotFound(EngineError): ...
+
+
 class NetworkError(EngineError): ...
 
 
 # --------------------------------------------------------------------------- #
 # GameState                                                                    #
 # --------------------------------------------------------------------------- #
+
 
 @dataclass(frozen=True)
 class GameState:

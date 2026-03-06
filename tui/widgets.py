@@ -9,15 +9,29 @@ class QuestionHistory(ListView):
 
     def append_qa(self, step: int, question: str, key: str) -> None:
         key_labels = {
-            "y": "Yes", "n": "No", "?": "IDK",
-            "+": "Probably", "-": "Probably not", "b": "Back",
+            "y": "Yes",
+            "n": "No",
+            "?": "IDK",
+            "+": "Probably",
+            "-": "Probably not",
+            "b": "Back",
         }
         label = key_labels.get(key, key)
-        self.append(ListItem(Label(f"[dim]{step}.[/dim] {escape(question)}  [dim]→ {escape(label)}[/dim]")))
+        self.append(
+            ListItem(
+                Label(
+                    f"[dim]{step}.[/dim] {escape(question)}  [dim]→ {escape(label)}[/dim]"
+                )
+            )
+        )
         self.scroll_end(animate=False)
 
     def append_win(self, name: str, outcome: str) -> None:
-        self.append(ListItem(Label(f"[bold]{escape(name)}[/bold]  [dim]→ {escape(outcome)}[/dim]")))
+        self.append(
+            ListItem(
+                Label(f"[bold]{escape(name)}[/bold]  [dim]→ {escape(outcome)}[/dim]")
+            )
+        )
         self.scroll_end(animate=False)
 
 
@@ -46,10 +60,7 @@ class WinProposal(Static):
 
     def show(self, name: str, desc: str) -> None:
         self.display = True
-        self.update(
-            f"[bold]{escape(name)}[/bold]\n"
-            f"[dim]{escape(desc)}[/dim]"
-        )
+        self.update(f"[bold]{escape(name)}[/bold]\n[dim]{escape(desc)}[/dim]")
 
     def hide(self) -> None:
         self.display = False

@@ -37,12 +37,14 @@ def root() -> RedirectResponse:
 def scalar_ui() -> HTMLResponse:
     return get_scalar_api_reference(openapi_url=app.openapi_url, title=app.title)
 
+
 _sessions: dict[str, AkinatorEngine] = {}
 
 
 # --------------------------------------------------------------------------- #
 # Pydantic models                                                             #
 # --------------------------------------------------------------------------- #
+
 
 class GameStateOut(BaseModel):
     question: str = Field(description="Current question text")
@@ -51,7 +53,9 @@ class GameStateOut(BaseModel):
     win: bool = Field(description="Akinator has a guess ready")
     finished: bool = Field(description="Game is over")
     name_proposition: str | None = Field(description="Guessed character name")
-    description_proposition: str | None = Field(description="Short description of the guess")
+    description_proposition: str | None = Field(
+        description="Short description of the guess"
+    )
 
     @classmethod
     def from_state(cls, state: GameState) -> "GameStateOut":
@@ -67,15 +71,22 @@ class GameStateOut(BaseModel):
 
 
 class StartGameRequest(BaseModel):
-    language: str = Field("en", description="Two-letter language code (en ar zh de es fr he it ja ko nl pl pt ru tr id)")
+    language: str = Field(
+        "en",
+        description="Two-letter language code (en ar zh de es fr he it ja ko nl pl pt ru tr id)",
+    )
 
 
 class AnswerRequest(BaseModel):
-    key: str = Field(description="Answer key: y (yes), n (no), ? (don't know), + (probably), - (probably not)")
+    key: str = Field(
+        description="Answer key: y (yes), n (no), ? (don't know), + (probably), - (probably not)"
+    )
 
 
 class StartGameResponse(BaseModel):
-    session_id: str = Field(description="Unique session ID - pass this in all later requests")
+    session_id: str = Field(
+        description="Unique session ID - pass this in all later requests"
+    )
     state: GameStateOut
 
 
@@ -119,12 +130,16 @@ def _engine_exc_to_http(exc: EngineError) -> HTTPException:
 # Session helpers                                                             #
 # --------------------------------------------------------------------------- #
 
+
 def _get_session(session_id: str) -> AkinatorEngine:
     engine = _sessions.get(session_id)
     if engine is None:
         raise HTTPException(
             status_code=404,
-            detail={"error": "SessionNotFound", "message": f"Session {session_id!r} not found"},
+            detail={
+                "error": "SessionNotFound",
+                "message": f"Session {session_id!r} not found",
+            },
         )
     return engine
 
@@ -133,18 +148,32 @@ def _get_session(session_id: str) -> AkinatorEngine:
 # Reusable response docs                                                      #
 # --------------------------------------------------------------------------- #
 
+
 def _err(description: str) -> dict:
     return {"description": description, "model": ErrorResponse}
 
+
 _R_SESSION = {404: _err("Session not found")}
-_R_ENGINE  = {408: _err("Akinator session timed out"), 502: _err("Upstream Akinator API error")}
+_R_ENGINE = {
+    408: _err("Akinator session timed out"),
+    502: _err("Upstream Akinator API error"),
+}
 
 
 # --------------------------------------------------------------------------- #
 # Routes                                                                      #
 # --------------------------------------------------------------------------- #
 
-@app.post("/games", response_model=StartGameResponse, status_code=201, responses={422: _err("Unsupported language code"), 503: _err("Failed to start a new game")})
+
+@app.post(
+    "/games",
+    response_model=StartGameResponse,
+    status_code=201,
+    responses={
+        422: _err("Unsupported language code"),
+        503: _err("Failed to start a new game"),
+    },
+)
 def start_game(body: StartGameRequest) -> StartGameResponse:
     """Start a new game session. Returns a `session_id` to use in all later requests."""
     engine = AkinatorEngine()
@@ -154,10 +183,16 @@ def start_game(body: StartGameRequest) -> StartGameResponse:
         raise _engine_exc_to_http(e) from e
     session_id = str(uuid.uuid4())
     _sessions[session_id] = engine
-    return StartGameResponse(session_id=session_id, state=GameStateOut.from_state(state))
+    return StartGameResponse(
+        session_id=session_id, state=GameStateOut.from_state(state)
+    )
 
 
-@app.post("/games/{session_id}/answer", response_model=StateResponse, responses={**_R_SESSION, **_R_ENGINE, 400: _err("Unknown answer key")})
+@app.post(
+    "/games/{session_id}/answer",
+    response_model=StateResponse,
+    responses={**_R_SESSION, **_R_ENGINE, 400: _err("Unknown answer key")},
+)
 def answer(session_id: str, body: AnswerRequest) -> StateResponse:
     """Submit an answer to the current question."""
     engine = _get_session(session_id)
@@ -168,7 +203,11 @@ def answer(session_id: str, body: AnswerRequest) -> StateResponse:
     return StateResponse(state=GameStateOut.from_state(state))
 
 
-@app.post("/games/{session_id}/back", response_model=StateResponse, responses={**_R_SESSION, **_R_ENGINE, 409: _err("Already at the first question")})
+@app.post(
+    "/games/{session_id}/back",
+    response_model=StateResponse,
+    responses={**_R_SESSION, **_R_ENGINE, 409: _err("Already at the first question")},
+)
 def back(session_id: str) -> StateResponse:
     """Undo the last answer and return to the previous question."""
     engine = _get_session(session_id)
@@ -179,7 +218,11 @@ def back(session_id: str) -> StateResponse:
     return StateResponse(state=GameStateOut.from_state(state))
 
 
-@app.post("/games/{session_id}/choose", response_model=StateResponse, responses={**_R_SESSION, **_R_ENGINE})
+@app.post(
+    "/games/{session_id}/choose",
+    response_model=StateResponse,
+    responses={**_R_SESSION, **_R_ENGINE},
+)
 def choose(session_id: str) -> StateResponse:
     """Accept Akinator's guess - the game ends as a win."""
     engine = _get_session(session_id)
@@ -190,7 +233,11 @@ def choose(session_id: str) -> StateResponse:
     return StateResponse(state=GameStateOut.from_state(state))
 
 
-@app.post("/games/{session_id}/exclude", response_model=StateResponse, responses={**_R_SESSION, **_R_ENGINE})
+@app.post(
+    "/games/{session_id}/exclude",
+    response_model=StateResponse,
+    responses={**_R_SESSION, **_R_ENGINE},
+)
 def exclude(session_id: str) -> StateResponse:
     """Reject Akinator's guess - the game continues with more questions."""
     engine = _get_session(session_id)
