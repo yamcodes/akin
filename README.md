@@ -22,7 +22,7 @@ The Akinator experience, simplified. No ads, no busy UI.
 ## Quick start
 
 ```bash
-make setup    # install deps for both services (one-time)
+make setup    # install deps + initialize both services (re-run after pulling dep changes)
 
 make start                    # full stack: engine (Docker) + TUI
 make start ARGS="es"          # same, Spanish
