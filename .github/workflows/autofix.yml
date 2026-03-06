@@ -1,0 +1,24 @@
+name: autofix.ci # needed to securely identify the workflow
+
+on:
+  pull_request:
+  push:
+    branches: ["main"]
+
+permissions:
+  contents: read
+
+jobs:
+  autofix:
+    runs-on: ubuntu-latest
+    if: |
+      github.event_name == 'pull_request' ||
+      (github.event_name == 'push' && github.event.sender.type != 'Bot' && github.event.head_commit != null)
+    steps:
+      - uses: actions/checkout@v6
+      - uses: astral-sh/setup-uv@v7
+      - name: Format (engine)
+        run: cd engine && uv run ruff format .
+      - name: Format (tui)
+        run: cd tui && uv run ruff format .
+      - uses: autofix-ci/action@7a166d7532b277f34e16238930461bf77f9d7ed8
