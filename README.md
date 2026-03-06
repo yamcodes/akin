@@ -14,7 +14,7 @@ The Akinator experience, simplified. No ads, no busy UI.
 ## Prerequisites
 
 | Tool                                                      | Required for                |
-|-----------------------------------------------------------|-----------------------------|
+| --------------------------------------------------------- | --------------------------- |
 | [uv](https://docs.astral.sh/uv/)                          | all targets                 |
 | [Docker](https://docs.docker.com/get-started/get-docker/) | `make docker`, `make start` |
 | [curl](https://curl.se/)                                  | `make start`                |
@@ -72,6 +72,7 @@ graph LR
 ```
 
 ### Phase 2: HTTP ← current
+
 [`phase2`](https://github.com/yamcodes/akin/tree/phase2) - Engine and TUI are independent services (separate `uv` projects).
 They communicate over HTTP. Engine ships as a Docker image.
 
@@ -104,7 +105,7 @@ graph LR
 ## Repository layout
 
 | Path                 | Description                                                   |
-|----------------------|---------------------------------------------------------------|
+| -------------------- | ------------------------------------------------------------- |
 | `engine/`            | Game logic + FastAPI HTTP server ([README](engine/README.md)) |
 | `tui/`               | Textual TUI client ([README](tui/README.md))                  |
 | `web/`               | Spring Boot hypermedia server (Phase 4, not yet implemented)  |

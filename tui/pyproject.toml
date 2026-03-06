@@ -2,11 +2,7 @@
 name = "akin-tui"
 version = "0.1.0"
 requires-python = ">=3.11"
-dependencies = [
-    "textual",
-    "httpx",
-    "readchar",
-]
+dependencies = ["textual", "httpx", "readchar"]
 
 [project.scripts]
 akin = "main:main"
@@ -19,6 +15,4 @@ build-backend = "setuptools.build_meta"
 py-modules = ["main", "app", "client", "widgets"]
 
 [dependency-groups]
-dev = [
-    "ruff>=0.15.5",
-]
+dev = ["ruff>=0.15.5"]

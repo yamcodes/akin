@@ -22,7 +22,7 @@ uv run python main.py en --engine-url http://my-server:8000
 ## Options
 
 | Option         | Default                                  | Description                                          |
-|----------------|------------------------------------------|------------------------------------------------------|
+| -------------- | ---------------------------------------- | ---------------------------------------------------- |
 | `language`     | `en`                                     | Two-letter language code (`en es pt fr de` …)        |
 | `--debug`      | off                                      | Show step number and progression % in the status bar |
 | `--engine-url` | `$ENGINE_URL` or `http://localhost:8000` | Engine server base URL                               |
@@ -32,7 +32,7 @@ uv run python main.py en --engine-url http://my-server:8000
 ## Key bindings
 
 | Key | Action                  |
-|-----|-------------------------|
+| --- | ----------------------- |
 | `y` | Yes                     |
 | `n` | No                      |
 | `?` | I don't know            |

@@ -1,0 +1,11 @@
+{
+  "name": "akin",
+  "private": true,
+  "scripts": {
+    "fix": "oxfmt",
+    "check": "oxfmt --check"
+  },
+  "devDependencies": {
+    "oxfmt": "^0.36.0"
+  }
+}

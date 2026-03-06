@@ -70,7 +70,7 @@ POST /games/{session_id}/answer
 ```
 
 | Key | Meaning      |
-|-----|--------------|
+| --- | ------------ |
 | `y` | Yes          |
 | `n` | No           |
 | `?` | I don't know |
@@ -131,7 +131,7 @@ Every response wraps the current game state:
 ```
 
 | Field                     | Type           | Description                    |
-|---------------------------|----------------|--------------------------------|
+| ------------------------- | -------------- | ------------------------------ |
 | `question`                | string         | Current question text          |
 | `step`                    | int            | Zero-based question index      |
 | `progression`             | float          | Akinator's confidence 0–100    |
@@ -149,7 +149,7 @@ Every response wraps the current game state:
 ## Error codes
 
 | Status | Error type             | Cause                       |
-|--------|------------------------|-----------------------------|
+| ------ | ---------------------- | --------------------------- |
 | 400    | `InvalidAnswerError`   | Unknown answer key          |
 | 404    | `SessionNotFound`      | Bad or expired session ID   |
 | 408    | `SessionTimeoutError`  | Akinator session timed out  |
