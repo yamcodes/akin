@@ -17,3 +17,8 @@ build-backend = "setuptools.build_meta"
 
 [tool.setuptools]
 py-modules = ["main", "app", "client", "widgets"]
+
+[dependency-groups]
+dev = [
+    "ruff>=0.15.5",
+]
